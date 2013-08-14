@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2012 Combodo SARL
+// Copyright (C) 2013 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
@@ -141,7 +141,6 @@ Class ApprovalComputeWorkingHours implements iWorkingTimeComputer
 }
 
 
-
 class ExtendedApprovalScheme extends ApprovalScheme
 {
 	public static function Init()
@@ -161,9 +160,6 @@ class ExtendedApprovalScheme extends ApprovalScheme
 		MetaModel::Init_InheritAttributes();
 	}
 
-	/**
-	 * RECOPIER COMMENTAIRE DEPUIS MODEL.APPROVAL-BASE
-	 */	 	
 	public static function GetApprovalScheme($oObject, $sReachingState)
 	{
 		if ((get_class($oObject) != 'UserRequest'))
@@ -177,30 +173,26 @@ class ExtendedApprovalScheme extends ApprovalScheme
 		}
 	
 		$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id = :servicesubcategory';
-		$oApprovalRuleSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL),
-					array(),
-					array(
-					   'servicesubcategory' => $oObject->Get('servicesubcategory_id'),
-					)
+		$oApprovalRuleSet = new DBObjectSet(
+			DBObjectSearch::FromOQL($sOQL),
+			array(),
+			array('servicesubcategory' => $oObject->Get('servicesubcategory_id'))
 		);
-
-
 
 		$oApprovalRule = $oApprovalRuleSet->fetch();
 
 		// check for level1 rules
 		$sApproverLevel1 = $oApprovalRule->Get('level1_rule');
 
-		$oApproverLevel1Set = new DBObjectSet(DBObjectSearch::FromOQL($sApproverLevel1),
-					array(),
-					array(
-						'caller_id' => $oObject->Get('caller_id'),
-						'service_id' => $oObject->Get('service_id'),	
-						'servicesubcategory_id' => $oObject->Get('servicesubcategory_id'),	
-					)
+		$oApproverLevel1Set = new DBObjectSet(
+			DBObjectSearch::FromOQL($sApproverLevel1),
+			array(),
+			array(
+				'caller_id' => $oObject->Get('caller_id'),
+				'service_id' => $oObject->Get('service_id'),	
+				'servicesubcategory_id' => $oObject->Get('servicesubcategory_id'),	
+			)
 		);	
-
-
 		if ($oApproverLevel1Set->count() == 0)
 		{
 			return null;
@@ -232,13 +224,11 @@ class ExtendedApprovalScheme extends ApprovalScheme
 							'service_id' => $oObject->Get('service_id'),	
 							'servicesubcategory_id' => $oObject->Get('servicesubcategory_id'),	
 						)
-			);	
-
+			);
 
 			if ($oApproverLevel2Set->count() != 0)
 			{
-				$aContacts = array();	
-
+				$aContacts = array();
 				while ( $oApproverLevel2 = $oApproverLevel2Set->Fetch())
 				{
 					$sType = get_class($oApproverLevel2);
@@ -248,7 +238,6 @@ class ExtendedApprovalScheme extends ApprovalScheme
 					);
 				}
 				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level2_default_approval') /* approve on timeout*/);	
-
 			}
 		}
 
@@ -276,35 +265,23 @@ class ExtendedApprovalScheme extends ApprovalScheme
 
 	}
 
-	/**
-	 * RECOPIER COMMENTAIRE DEPUIS MODEL.APPROVAL-BASE
-	 */	 	
 	public function GetTitle($sContactClass, $iContactId)
 	{
 		$sValue = Dict::S('Approbation:ApprovalRequested');
 		return $sValue;
 	}
 
-	/**
-	 * RECOPIER COMMENTAIRE DEPUIS MODEL.APPROVAL-BASE
-	 */	 	
 	public function GetIntroduction($sContactClass, $iContactId)
 	{
 		$sIntroduction = Dict::S('Approbation:Introduction');
 		return $sIntroduction;
 	}
 
-	/**
-	 * RECOPIER COMMENTAIRE DEPUIS MODEL.APPROVAL-BASE
-	 */	 	
 	public function DoApprove(&$oObject)
 	{
 		$oObject->ApplyStimulus('ev_approve');
 	}
 
-	/**
-	 * RECOPIER COMMENTAIRE DEPUIS MODEL.APPROVAL-BASE
-	 */	 	
 	public function DoReject(&$oObject)
 	{
 		//$oObject->Set('reject_reason', "The change add been rejected");
@@ -319,11 +296,10 @@ class ExtendedApprovalScheme extends ApprovalScheme
 
 	public function IsAllowedToSeeObjectDetails($oApprover, $oObject)
 	{
-	    return false;
+		return false;
 	}
 
 }
 
 $oMyMenuGroup = new MenuGroup('RequestManagement', 30 /* fRank */);
 new WebPageMenuNode('Ongoing approval',utils::GetAbsoluteUrlAppRoot().'/env-production/approval-base/report.php?class=UserRequest',$oMyMenuGroup->GetIndex(),6);
-?>
