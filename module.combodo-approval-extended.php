@@ -26,7 +26,7 @@ SetupWebPage::AddModule(
 		// Setup
 		//
 		'dependencies' => array(
-			'approval-base/1.1.0',
+			'approval-base/1.2.0',
 			'itop-service-mgmt/2.0.0||itop-service-mgmt-provider/2.0.0',
 			'itop-request-mgmt-itil/2.0.0||itop-request-mgmt/2.0.0',
 		),
