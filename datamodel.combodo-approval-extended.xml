@@ -213,36 +213,6 @@
           <stimulus id="ev_wait_for_approval" xsi:type="StimulusInternal" _delta="redefine"/>
         </stimuli>
      </lifecycle>
-     <methods>
-        <method id="AfterInsert" _delta="define">
-          <static>false</static>
-          <access>protected</access>
-          <type>Overload-DBObject</type>
-          <code><![CDATA[	protected function AfterInsert()
-	{
-		$iSubCategoryId = $this->Get('servicesubcategory_id');
-                if ($iSubCategoryId != 0 )
-		{
-
-			$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id= ar.id WHERE sc.id = :servicesubcategory_id';
-			$oApprovalRuleSet = new DBObjectSet(DBObjectSearch::FromOQL($sOQL),
-				array(),
-				array(
-			   		'servicesubcategory_id' => $iSubCategoryId,
-				)
-			);
-			if ($oApprovalRuleSet->Count() != 0)
-			{
-				$this->ApplyStimulus('ev_wait_for_approval');
-				$this->DBUpdate();
-			}
-                }
-
-
-	}]]></code>
-        </method>
-
-     </methods>
    </class>
 
   </classes>

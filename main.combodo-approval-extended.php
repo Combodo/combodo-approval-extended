@@ -167,7 +167,7 @@ class ExtendedApprovalScheme extends ApprovalScheme
 
 			return null;
 		}
-		if ($sReachingState != 'waiting_for_approval')
+		if ($sReachingState != 'new')
 		{
 			return null;
 		}
@@ -179,9 +179,13 @@ class ExtendedApprovalScheme extends ApprovalScheme
 			array('servicesubcategory' => $oObject->Get('servicesubcategory_id'))
 		);
 
-		$oApprovalRule = $oApprovalRuleSet->fetch();
-
 		// check for level1 rules
+		if ($oApprovalRuleSet->count() == 0)
+		{
+			return null;
+		}
+
+		$oApprovalRule = $oApprovalRuleSet->fetch();
 		$sApproverLevel1 = $oApprovalRule->Get('level1_rule');
 
 		$oApproverLevel1Set = new DBObjectSet(
@@ -198,6 +202,8 @@ class ExtendedApprovalScheme extends ApprovalScheme
 			return null;
 		}
 
+		$oObject->ApplyStimulus('ev_wait_for_approval');
+
 		$oScheme = new ExtendedApprovalScheme();	
 		$aContacts = array();	
 	
@@ -209,7 +215,7 @@ class ExtendedApprovalScheme extends ApprovalScheme
 				'id' => $oApproverLevel1->GetKey(),
 			);
 		}
-		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level1_default_approval') /* approve on timeout*/);	
+		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level1_default_approval') /* approve on timeout*/,self::EXIT_ON_FIRST_REPLY);	
 
 		// check for level2 rules
 		$sApproverLevel2 = $oApprovalRule->Get('level2_rule');
@@ -237,7 +243,7 @@ class ExtendedApprovalScheme extends ApprovalScheme
 						'id' => $oApproverLevel2->GetKey(),
 					);
 				}
-				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level2_default_approval') /* approve on timeout*/);	
+				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level2_default_approval') /* approve on timeout*/,self::EXIT_ON_FIRST_REPLY);	
 			}
 		}
 
@@ -299,6 +305,64 @@ class ExtendedApprovalScheme extends ApprovalScheme
 		return false;
 	}
 
+}
+
+
+class HideButtonsPlugin implements iApplicationUIExtension
+{
+    public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
+    {
+        if ( (get_class($oObject) == 'UserRequest' ) && ( $oObject->IsNew()) )
+        {
+            $oPage->add_ready_script(
+
+<<<EOF
+$('button.action[name="next_action"]').hide();
+EOF
+            );
+        }
+    }
+
+
+    public function OnDisplayRelations($oObject, WebPage $oPage, $bEditMode = false)
+    {
+
+    }
+
+    public function OnFormSubmit($oObject, $sFormPrefix = '')
+    {
+
+    }
+
+    public function OnFormCancel($sTempId)
+    {
+
+    }
+
+    public function EnumUsedAttributes($oObject)
+    {
+        return array();
+    }
+
+
+    public function GetIcon($oObject)
+    {
+        return '';
+    }
+
+    public function GetHilightClass($oObject)
+    {
+        // Possible return values are:
+        // HILIGHT_CLASS_CRITICAL, HILIGHT_CLASS_WARNING, HILIGHT_CLASS_OK, HILIGHT_CLASS_NONE    
+        return HILIGHT_CLASS_NONE;
+    }
+
+    public function EnumAllowedActions(DBObjectSet $oSet)
+
+    {
+        // No action
+        return array();
+    }
 }
 
 $oMyMenuGroup = new MenuGroup('RequestManagement', 30 /* fRank */);
