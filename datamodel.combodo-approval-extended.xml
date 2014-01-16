@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
   <classes>
+    <class id="UserRequest">
+      <lifecycle>
+        <stimuli>
+          <stimulus id="ev_approve" xsi:type="StimulusInternal" _delta="redefine"/>
+          <stimulus id="ev_reject" xsi:type="StimulusInternal" _delta="redefine"/>
+        </stimuli>
+      </lifecycle>
+    </class>
     <class id="ApprovalRule" _delta="define">
       <parent>cmdbAbstractObject</parent>
       <properties>
@@ -79,6 +87,7 @@
           <count_min>0</count_min>
           <count_max>0</count_max>
           <duplicates/>
+          <edit_mode>add_remove</edit_mode>
         </field>
         <field id="coveragewindow_id" xsi:type="AttributeExternalKey">
           <sql>coveragewindow_id</sql>
