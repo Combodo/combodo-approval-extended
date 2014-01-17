@@ -130,7 +130,7 @@ class ApprovalComputeWorkingHours implements iWorkingTimeComputer
 			{
 				$iTmpDuration = EnhancedSLAComputation::GetOpenDurationFromCoverage($oCoverage, $oHolidaysSet, $oStartDate, $oEndDate);
 				// Retain the longer duration
-				if ( ($iDuration == null) || ($iTmpDuration > $iDuration))
+				if (($iDuration == null) || ($iTmpDuration > $iDuration))
 				{
 					$iDuration = $iTmpDuration;
 				}			
@@ -276,7 +276,6 @@ class ExtendedApprovalScheme extends ApprovalScheme
 
 	protected function GetWorkingTimeComputer()
 	{
-		// This class is provided as the default way to compute the active time, aka 24x7, 24 hours a day!
 		return 'ApprovalComputeWorkingHours';
 	}
 
@@ -285,64 +284,77 @@ class ExtendedApprovalScheme extends ApprovalScheme
 		return false;
 	}
 
+	/**
+	 * Overridable to implement the abort feature
+	 * @param oUser (implicitely the current user if null)	 
+	 * Return true if the given user is allowed to abort	 
+	 */	
+	public function IsAllowedToAbort($oUser = null)
+	{
+		if (!UserRights::IsAdministrator($oUser))
+		{
+			return false;
+		}
+		return MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'enable_admin_abort', false);
+	}
 }
 
 
 class HideButtonsPlugin implements iApplicationUIExtension
 {
-    public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
-    {
-        if ( (get_class($oObject) == 'UserRequest' ) && ( $oObject->IsNew()) )
-        {
-            $oPage->add_ready_script(
+	public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
+	{
+		if ( (get_class($oObject) == 'UserRequest' ) && ( $oObject->IsNew()) )
+		{
+			$oPage->add_ready_script(
 
 <<<EOF
 $('button.action[name="next_action"]').hide();
 EOF
-            );
-        }
-    }
+			);
+		}
+	}
 
 
-    public function OnDisplayRelations($oObject, WebPage $oPage, $bEditMode = false)
-    {
+	public function OnDisplayRelations($oObject, WebPage $oPage, $bEditMode = false)
+	{
 
-    }
+	}
 
-    public function OnFormSubmit($oObject, $sFormPrefix = '')
-    {
+	public function OnFormSubmit($oObject, $sFormPrefix = '')
+	{
 
-    }
+	}
 
-    public function OnFormCancel($sTempId)
-    {
+	public function OnFormCancel($sTempId)
+	{
 
-    }
+	}
 
-    public function EnumUsedAttributes($oObject)
-    {
-        return array();
-    }
+	public function EnumUsedAttributes($oObject)
+	{
+		return array();
+	}
 
 
-    public function GetIcon($oObject)
-    {
-        return '';
-    }
+	public function GetIcon($oObject)
+	{
+		return '';
+	}
 
-    public function GetHilightClass($oObject)
-    {
-        // Possible return values are:
-        // HILIGHT_CLASS_CRITICAL, HILIGHT_CLASS_WARNING, HILIGHT_CLASS_OK, HILIGHT_CLASS_NONE    
-        return HILIGHT_CLASS_NONE;
-    }
+	public function GetHilightClass($oObject)
+	{
+		// Possible return values are:
+		// HILIGHT_CLASS_CRITICAL, HILIGHT_CLASS_WARNING, HILIGHT_CLASS_OK, HILIGHT_CLASS_NONE
+		return HILIGHT_CLASS_NONE;
+	}
 
-    public function EnumAllowedActions(DBObjectSet $oSet)
+	public function EnumAllowedActions(DBObjectSet $oSet)
 
-    {
-        // No action
-        return array();
-    }
+	{
+		// No action
+		return array();
+	}
 }
 
 class ApprovalFromUI implements iPopupMenuExtension
@@ -358,47 +370,7 @@ class ApprovalFromUI implements iPopupMenuExtension
 	 */
 	public static function EnumItems($iMenuId, $param)
 	{
-		$aRet = array();
-		if ($iMenuId == self::MENU_OBJDETAILS_ACTIONS)
-		{
-			$oObject = $param;
-
-			// Filter out the object out of scope of the approval processes
-			if (get_class($oObject) == 'UserRequest')
-			{
-				// Is there an ongoing approval process for the object ?
-				$oApprovSearch = DBObjectSearch::FromOQL('SELECT ApprovalScheme WHERE status = \'ongoing\' AND obj_class = :obj_class AND obj_key = :obj_key');
-				$oApprovSearch->AllowAllData();
-				$oApprovals = new DBObjectSet($oApprovSearch, array(), array('obj_class' => get_class($oObject), 'obj_key' => $oObject->GetKey()));
-				if ($oApprovals->Count() > 0)
-				{
-					$oApproval = $oApprovals->Fetch();
-
-					// Is the current user associated to a contact ?
-					$iContactId = UserRights::GetContactId();
-					if ($iContactId > 0)
-					{
-						// Does the approval concern the current user?
-						$sReplyUrl = $oApproval->MakeReplyUrl('Person', $iContactId);
-						if (!is_null($sReplyUrl))
-						{
-							// Here we are: add a menu to approve or reject the request
-							$aRet[] = new URLPopupMenuItem('approval_reply_url', Dict::S('Approval:Action-ApproveOrReject'), $sReplyUrl);
-						}
-					}
-					// For administrators, propose to force the result
-					if (UserRights::IsAdministrator())
-					{
-						if (MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'enable_admin_abort', false))
-						{
-							$sReplyUrl = $oApproval->MakeAbortUrl();
-							$aRet[] = new URLPopupMenuItem('approval_abort_url', Dict::S('Approval:Action-Abort'), $sReplyUrl);
-						}
-					}
-				}
-			}
-		}
-		return $aRet;
+		return ApprovalScheme::GetPopMenuItems($iMenuId, $param);
 	}
 }
 
