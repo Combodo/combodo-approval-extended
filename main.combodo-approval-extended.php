@@ -281,7 +281,12 @@ class ExtendedApprovalScheme extends ApprovalScheme
 
 	public function IsAllowedToSeeObjectDetails($oApprover, $oObject)
 	{
-		return false;
+		if (is_null(UserRights::GetUserObject()))
+		{
+			// Not logged in
+			return false;
+		}
+		return true;
 	}
 
 	/**
