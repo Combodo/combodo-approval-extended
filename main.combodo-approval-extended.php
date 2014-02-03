@@ -166,7 +166,8 @@ class ExtendedApprovalScheme extends ApprovalScheme
 		{
 			return null;
 		}
-		if ($sReachingState != 'new')
+		$sTargetState = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_state', 'new');
+		if ($sReachingState != $sTargetState)
 		{
 			return null;
 		}
@@ -296,11 +297,32 @@ class ExtendedApprovalScheme extends ApprovalScheme
 	 */	
 	public function IsAllowedToAbort($oUser = null)
 	{
-		if (!UserRights::IsAdministrator($oUser))
+		if (is_null($oUser))
+		{
+			$oUser = UserRights::GetUserObject();
+		}
+		if (is_null($oUser))
 		{
 			return false;
 		}
-		return MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'enable_admin_abort', false);
+
+		$sAllowedProfiles = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'bypass_profiles', 'Administrator, Service Manager');
+		$aAllowed = array();
+		foreach (explode(',', $sAllowedProfiles) as $sProfileRaw)
+		{
+			$aAllowed[] = trim($sProfileRaw);
+		}
+
+		$oProfileSet = $oUser->Get('profile_list');
+		while ($oProfile = $oProfileSet->Fetch())
+		{
+			$sProfileName = $oProfile->Get('profile');
+			if (in_array($sProfileName, $aAllowed))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
 

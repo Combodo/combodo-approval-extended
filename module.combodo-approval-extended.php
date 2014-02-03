@@ -57,7 +57,8 @@ SetupWebPage::AddModule(
 
 		'settings' => array(
 			// Module specific settings go here, if any
-			'enable_admin_abort' => false
+			'target_state' => 'new',
+			'bypass_profiles' => 'Administrator, Service Manager'
 		),
 	)
 );
