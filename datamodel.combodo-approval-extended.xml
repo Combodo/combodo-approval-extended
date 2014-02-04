@@ -88,6 +88,7 @@
           <count_max>0</count_max>
           <duplicates/>
           <edit_mode>add_remove</edit_mode>
+	  <tracking_level>none</tracking_level>
         </field>
         <field id="coveragewindow_id" xsi:type="AttributeExternalKey">
           <sql>coveragewindow_id</sql>
