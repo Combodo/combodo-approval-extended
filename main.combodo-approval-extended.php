@@ -402,4 +402,4 @@ class ApprovalFromUI implements iPopupMenuExtension
 }
 
 $oMyMenuGroup = new MenuGroup('RequestManagement', 30 /* fRank */);
-new WebPageMenuNode('Ongoing approval',utils::GetAbsoluteUrlModulesRoot().'approval-base/report.php?class=UserRequest&do_filter_my_approvals=on',$oMyMenuGroup->GetIndex(),6);
+new WebPageMenuNode('Ongoing approval', utils::GetAbsoluteUrlModulePage('approval-base', 'report.php', array('class' => 'UserRequest', 'do_filter_my_approvals' => 'on')), $oMyMenuGroup->GetIndex(), 6);
