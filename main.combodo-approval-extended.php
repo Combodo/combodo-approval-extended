@@ -206,7 +206,8 @@ class ExtendedApprovalScheme extends ApprovalScheme
 				'id' => $oApproverLevel1->GetKey(),
 			);
 		}
-		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level1_default_approval') /* approve on timeout*/,self::EXIT_ON_FIRST_REPLY);	
+		$bApproveOnTimeout = ($oApprovalRule->Get('level1_default_approval') == 'yes');
+		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout/* approve on timeout*/, self::EXIT_ON_FIRST_REPLY);	
 
 		// check for level2 rules
 		$sApproverLevel2 = $oApprovalRule->Get('level2_rule');
@@ -224,7 +225,8 @@ class ExtendedApprovalScheme extends ApprovalScheme
 						'id' => $oApproverLevel2->GetKey(),
 					);
 				}
-				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $oApprovalRule->Get('level2_default_approval') /* approve on timeout*/,self::EXIT_ON_FIRST_REPLY);	
+				$bApproveOnTimeout = ($oApprovalRule->Get('level2_default_approval') == 'yes');
+				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout /* approve on timeout*/, self::EXIT_ON_FIRST_REPLY);	
 			}
 		}
 
