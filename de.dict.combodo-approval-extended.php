@@ -86,7 +86,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 // Class: ServiceSubcategory
 //
 
-Dict::Add('EN US', 'English', 'English', array(
+Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Class:ServiceSubcategory/Attribute:approvalrule_id' => 'Freigaberegel',
 	'Class:ServiceSubcategory/Attribute:approvalrule_id+' => '',
 	'Class:ServiceSubcategory/Attribute:approvalrule_name' => 'Freigaberegel Name',
