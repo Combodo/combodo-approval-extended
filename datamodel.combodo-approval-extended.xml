@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <itop_design xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
   <classes>
-    <class id="UserRequest">
+    <class id="UserRequest" _created_in="itop-request-mgmt" _delta="must_exist">
+      <fields>
+        <field id="approver_id" xsi:type="AttributeExternalKey" _delta="delete"/>
+        <field id="approver_email" xsi:type="AttributeExternalField" _delta="delete"/>
+      </fields>
       <lifecycle>
         <stimuli>
           <stimulus id="ev_approve" xsi:type="StimulusInternal" _delta="redefine"/>
           <stimulus id="ev_reject" xsi:type="StimulusInternal" _delta="redefine"/>
+          <stimulus id="ev_wait_for_approval" xsi:type="StimulusInternal" _delta="redefine"/>
         </stimuli>
+        <states>
+          <state id="new" _delta="must_exist">
+            <flags>
+              <attribute id="approver_id" _delta="delete"/>
+            </flags>
+          </state>
+          <state id="assigned" _delta="must_exist">
+            <flags>
+              <attribute id="approver_id" _delta="delete"/>
+            </flags>
+          </state>
+          <state id="waiting_for_approval" _delta="must_exist">
+            <flags>
+              <attribute id="approver_id" _delta="delete"/>
+            </flags>
+          </state>
+          <state id="approved" _delta="must_exist">
+            <flags>
+              <attribute id="approver_id" _delta="delete"/>
+            </flags>
+          </state>
+        </states>
       </lifecycle>
+      <methods>
+        <method id="SetApprover" _delta="delete"/>
+      </methods>
+      <presentation>
+        <details>
+          <items>
+            <item id="col:col2">
+              <items>
+                <item id="fieldset:Ticket:contact">
+                  <items>
+                    <item id="approver_id" _delta="delete"/>
+                  </items>
+                  <rank>20</rank>
+                </item>
+              </items>
+            </item>
+          </items>
+        </details>
+      </presentation>
     </class>
     <class id="ApprovalRule" _delta="define">
       <parent>cmdbAbstractObject</parent>
@@ -95,7 +141,7 @@
           <target_class>CoverageWindow</target_class>
           <is_null_allowed>false</is_null_allowed>
           <on_target_delete>DEL_MANUAL</on_target_delete>
-          <jointype></jointype>
+          <allow_target_creation>false</allow_target_creation>
         </field>
         <field id="coveragewindow_name" xsi:type="AttributeExternalField">
           <extkey_attcode>coveragewindow_id</extkey_attcode>
@@ -216,15 +262,6 @@
         </details>
       </presentation>
     </class>
-
-    <class id="UserRequest">
-     <lifecycle>
-	<stimuli>
-          <stimulus id="ev_wait_for_approval" xsi:type="StimulusInternal" _delta="redefine"/>
-        </stimuli>
-     </lifecycle>
-   </class>
-
   </classes>
    <menus>
     <menu id="ApprovalRule" xsi:type="OQLMenuNode" _delta="define">

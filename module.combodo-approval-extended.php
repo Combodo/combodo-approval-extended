@@ -16,11 +16,11 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-approval-extended/1.0.4',
+	'combodo-approval-extended/1.0.6',
 	array(
 		// Identification
 		//
-		'label' => 'Extended approval scheme(on user requests)',
+		'label' => 'Enhanced Approval Schemes',
 		'category' => 'feature',
 
 		// Setup
