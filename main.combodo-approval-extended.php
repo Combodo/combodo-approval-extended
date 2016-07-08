@@ -335,12 +335,16 @@ class HideButtonsPlugin implements iApplicationUIExtension
 	{
 		if ( (get_class($oObject) == 'UserRequest' ) && ( $oObject->IsNew()) )
 		{
-			$oPage->add_ready_script(
-
+			$oSet = new DBObjectSet(new DBObjectSearch('ApprovalRule'));
+			$iCount = $oSet->Count();
+			if ($iCount > 0)
+			{
+				$oPage->add_ready_script(
 <<<EOF
 $('button.action[name="next_action"]').hide();
 EOF
-			);
+				);
+			}
 		}
 	}
 
