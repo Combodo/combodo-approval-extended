@@ -262,6 +262,243 @@
         </details>
       </presentation>
     </class>
+    <class id="ExtendedApprovalScheme" _delta="define">
+      <parent>ApprovalScheme</parent>
+      <properties>
+        <category></category>
+        <abstract>false</abstract>
+        <key_type>autoincrement</key_type>
+        <db_table>my_approval_scheme</db_table>
+        <db_key_field>id</db_key_field>
+        <db_final_class_field></db_final_class_field>
+        <naming>
+          <format>%1$s %2$s</format>
+          <attributes>
+            <attribute id="obj_class"/>
+            <attribute id="obj_key"/>
+          </attributes>
+        </naming>
+        <display_template></display_template>
+        <icon></icon>
+        <reconciliation>
+          <attributes/>
+        </reconciliation>
+      </properties>
+      <fields/>
+      <methods>
+        <method id="GetApprovalScheme">
+          <static>true</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public static function GetApprovalScheme($oObject, $sReachingState)
+	{
+		if ((get_class($oObject) != 'UserRequest'))
+		{
+			return null;
+		}
+		$sTargetState = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_state', 'new');
+		if ($sReachingState != $sTargetState)
+		{
+			return null;
+		}
+
+		$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id = :servicesubcategory';
+		$oApprovalRuleSet = new DBObjectSet(
+			DBObjectSearch::FromOQL($sOQL),
+			array(),
+			array('servicesubcategory' => $oObject->Get('servicesubcategory_id'))
+		);
+
+		// check for level1 rules
+		if ($oApprovalRuleSet->count() == 0)
+		{
+			return null;
+		}
+
+		$oApprovalRule = $oApprovalRuleSet->fetch();
+		$sApproverLevel1 = $oApprovalRule->Get('level1_rule');
+
+		$oApproverLevel1Set = new DBObjectSet(DBObjectSearch::FromOQL($sApproverLevel1), array(), $oObject->ToArgs('this'));
+		if ($oApproverLevel1Set->count() == 0)
+		{
+			return null;
+		}
+
+		$oObject->ApplyStimulus('ev_wait_for_approval');
+
+		$oScheme = new ExtendedApprovalScheme();
+		$aContacts = array();
+		while ($oApproverLevel1 = $oApproverLevel1Set->Fetch())
+		{
+			$sType = get_class($oApproverLevel1);
+			$aContacts[] = array(
+				'class' => $sType,
+				'id' => $oApproverLevel1->GetKey(),
+			);
+		}
+		$bApproveOnTimeout = ($oApprovalRule->Get('level1_default_approval') == 'yes');
+		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout/* approve on timeout*/, self::EXIT_ON_FIRST_REPLY);
+
+		// check for level2 rules
+		$sApproverLevel2 = $oApprovalRule->Get('level2_rule');
+		if ($sApproverLevel2 != '')
+		{
+			$oApproverLevel2Set = new DBObjectSet(DBObjectSearch::FromOQL($sApproverLevel2), array(), $oObject->ToArgs('this'));
+			if ($oApproverLevel2Set->count() != 0)
+			{
+				$aContacts = array();
+				while ($oApproverLevel2 = $oApproverLevel2Set->Fetch())
+				{
+					$sType = get_class($oApproverLevel2);
+					$aContacts[] = array(
+						'class' => $sType,
+						'id' => $oApproverLevel2->GetKey(),
+					);
+				}
+				$bApproveOnTimeout = ($oApprovalRule->Get('level2_default_approval') == 'yes');
+				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout /* approve on timeout*/, self::EXIT_ON_FIRST_REPLY);
+			}
+		}
+
+		return $oScheme;
+	}]]></code>
+        </method>
+        <method id="GetEmailSubject">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetEmailSubject($sContactClass, $iContactId)
+	{
+		$sEmailSubject = Dict::S('Approbation:ApprovalSubject');
+		return $sEmailSubject;
+	}]]></code>
+        </method>
+        <method id="GetEmailBody">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetEmailBody($sContactClass, $iContactId)
+	{
+		$sBody = Dict::S('Approbation:ApprovalBody');
+		return $sBody;
+
+	}]]></code>
+        </method>
+        <method id="GetFormBody">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetFormBody($sContactClass, $iContactId)
+	{
+		$sBody = Dict::S('Approbation:FormBody');
+		return $sBody;
+
+	}]]></code>
+        </method>
+        <method id="GetTitle">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetTitle($sContactClass, $iContactId)
+	{
+		$sValue = Dict::S('Approbation:ApprovalRequested');
+		return $sValue;
+	}]]></code>
+        </method>
+        <method id="GetIntroduction">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function GetIntroduction($sContactClass, $iContactId)
+	{
+		$sIntroduction = Dict::S('Approbation:Introduction');
+		return $sIntroduction;
+	}]]></code>
+        </method>
+        <method id="DoApprove">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function DoApprove(&$oObject)
+	{
+		$oObject->ApplyStimulus('ev_approve');
+	}]]></code>
+        </method>
+        <method id="DoReject">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function DoReject(&$oObject)
+	{
+		//$oObject->Set('reject_reason', "The change add been rejected");
+		$oObject->ApplyStimulus('ev_reject');
+	}]]></code>
+        </method>
+        <method id="GetWorkingTimeComputer">
+          <static>false</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	protected function GetWorkingTimeComputer()
+	{
+		return 'ApprovalComputeWorkingHours';
+	}]]></code>
+        </method>
+        <method id="IsAllowedToSeeObjectDetails">
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code>	public function IsAllowedToSeeObjectDetails($oApprover, $oObject)
+            {
+            if (is_null(UserRights::GetUserObject()))
+            {
+            // Not logged in
+            return false;
+            }
+            return true;
+            }</code>
+        </method>
+        <method id="IsAllowedToAbort">
+          <comment>/**&#13;
+            * Overridable to implement the abort feature&#13;
+            * @param oUser (implicitely the current user if null)	 &#13;
+            * Return true if the given user is allowed to abort	 &#13;
+            */</comment>
+          <static>false</static>
+          <access>public</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[	public function IsAllowedToAbort($oUser = null)
+	{
+		if (is_null($oUser))
+		{
+			$oUser = UserRights::GetUserObject();
+		}
+		if (is_null($oUser))
+		{
+			return false;
+		}
+
+		$sAllowedProfiles = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'bypass_profiles', 'Administrator, Service Manager');
+		$aAllowed = array();
+		foreach (explode(',', $sAllowedProfiles) as $sProfileRaw)
+		{
+			$aAllowed[] = trim($sProfileRaw);
+		}
+
+		$oProfileSet = $oUser->Get('profile_list');
+		while ($oProfile = $oProfileSet->Fetch())
+		{
+			$sProfileName = $oProfile->Get('profile');
+			if (in_array($sProfileName, $aAllowed))
+			{
+				return true;
+			}
+		}
+		return false;
+	}]]></code>
+        </method>
+      </methods>
+      <presentation/>
+    </class>
   </classes>
    <menus>
     <menu id="ApprovalRule" xsi:type="OQLMenuNode" _delta="define">
