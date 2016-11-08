@@ -108,6 +108,16 @@
           <default_value>70</default_value>
           <is_null_allowed>false</is_null_allowed>
         </field>
+        <field id="level1_exit_condition" xsi:type="AttributeEnum" _delta="define">
+          <values>
+            <value>first_reply</value>
+            <value>first_reject</value>
+            <value>first_approve</value>
+          </values>
+          <sql>level1_exit_condition</sql>
+          <default_value>first_reply</default_value>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
         <field id="level2_rule" xsi:type="AttributeOQL">
           <sql>level2_rule</sql>
           <default_value/>
@@ -126,6 +136,16 @@
           <sql>level2_timeout</sql>
           <default_value>70</default_value>
           <is_null_allowed>true</is_null_allowed>
+        </field>
+        <field id="level2_exit_condition" xsi:type="AttributeEnum" _delta="define">
+          <values>
+            <value>first_reply</value>
+            <value>first_reject</value>
+            <value>first_approve</value>
+          </values>
+          <sql>level2_exit_condition</sql>
+          <default_value>first_reply</default_value>
+          <is_null_allowed>false</is_null_allowed>
         </field>
         <field id="servicesubcategory_list" xsi:type="AttributeLinkedSet">
           <linked_class>ServiceSubcategory</linked_class>
@@ -180,16 +200,19 @@
               <items>
                 <item id="fieldset:ApprovalRule:Level1">
                   <rank>10</rank>
-                 <items>
-		    <item id="level1_rule">
-		      <rank>10</rank>
-		    </item>
-		    <item id="level1_default_approval">
-		      <rank>20</rank>
-		    </item>
-		    <item id="level1_timeout">
-		      <rank>30</rank>
-		    </item>
+                   <items>
+                    <item id="level1_rule">
+                      <rank>10</rank>
+                    </item>
+                    <item id="level1_default_approval">
+                      <rank>20</rank>
+                    </item>
+                    <item id="level1_timeout">
+                      <rank>30</rank>
+                    </item>
+                   <item id="level1_exit_condition">
+                     <rank>40</rank>
+                   </item>
                  </items>
                 </item>
               </items>
@@ -199,17 +222,20 @@
               <items>
                 <item id="fieldset:ApprovalRule:Level2">
                   <rank>10</rank>
-                 <items>
-		    <item id="level2_rule">
-		      <rank>10</rank>
-		    </item>
-		    <item id="level2_default_approval">
-		      <rank>20</rank>
-		    </item>
-		    <item id="level2_timeout">
-		      <rank>30</rank>
-		    </item>
-                 </items>
+                   <items>
+                    <item id="level2_rule">
+                      <rank>10</rank>
+                    </item>
+                    <item id="level2_default_approval">
+                      <rank>20</rank>
+                    </item>
+                    <item id="level2_timeout">
+                      <rank>30</rank>
+                    </item>
+                    <item id="level2_exit_condition">
+                      <rank>40</rank>
+                    </item>
+                   </items>
                 </item>
               </items>
             </item>
@@ -292,6 +318,11 @@
           <type>Overload-DBObject</type>
           <code><![CDATA[	public static function GetApprovalScheme($oObject, $sReachingState)
 	{
+		$aExitConditionCodes = array(
+			'first_reply' => ApprovalScheme::EXIT_ON_FIRST_REPLY,
+			'first_reject' => ApprovalScheme::EXIT_ON_FIRST_REJECT,
+			'first_approve' => ApprovalScheme::EXIT_ON_FIRST_APPROVE,
+		);
 		if ((get_class($oObject) != 'UserRequest'))
 		{
 			return null;
@@ -337,7 +368,8 @@
 			);
 		}
 		$bApproveOnTimeout = ($oApprovalRule->Get('level1_default_approval') == 'yes');
-		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout/* approve on timeout*/, self::EXIT_ON_FIRST_REPLY);
+		$iExitCondition = $aExitConditionCodes[$oApprovalRule->Get('level1_exit_condition')];
+		$oScheme->AddStep($aContacts, $oApprovalRule->Get('level1_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout/* approve on timeout*/, $iExitCondition);
 
 		// check for level2 rules
 		$sApproverLevel2 = $oApprovalRule->Get('level2_rule');
@@ -356,7 +388,8 @@
 					);
 				}
 				$bApproveOnTimeout = ($oApprovalRule->Get('level2_default_approval') == 'yes');
-				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout /* approve on timeout*/, self::EXIT_ON_FIRST_REPLY);
+				$iExitCondition = $aExitConditionCodes[$oApprovalRule->Get('level2_exit_condition')];
+				$oScheme->AddStep($aContacts, $oApprovalRule->Get('level2_timeout')*3600 /*timeout (s)*/, $bApproveOnTimeout /* approve on timeout*/, $iExitCondition);
 			}
 		}
 
