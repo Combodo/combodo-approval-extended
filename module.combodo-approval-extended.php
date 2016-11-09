@@ -26,7 +26,7 @@ SetupWebPage::AddModule(
 		// Setup
 		//
 		'dependencies' => array(
-			'approval-base/1.3.0',
+			'approval-base/2.5.0',
 			'itop-service-mgmt/2.0.0||itop-service-mgmt-provider/2.0.0',
 			'itop-request-mgmt-itil/2.0.0||itop-request-mgmt/2.0.0',
 			'combodo-sla-computation/1.0.0',
@@ -58,7 +58,8 @@ SetupWebPage::AddModule(
 		'settings' => array(
 			// Module specific settings go here, if any
 			'target_state' => 'new',
-			'bypass_profiles' => 'Administrator, Service Manager'
+			'bypass_profiles' => 'Administrator, Service Manager',
+			'reuse_previous_answers' => true
 		),
 	)
 );
