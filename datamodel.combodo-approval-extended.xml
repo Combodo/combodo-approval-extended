@@ -410,23 +410,13 @@
 		return $oScheme;
 	}]]></code>
         </method>
-        <method id="GetEmailSubject">
+        <method id="GetPublicObjectDetails">
           <static>false</static>
           <access>public</access>
           <type>Overload-DBObject</type>
-          <code><![CDATA[	public function GetEmailSubject($sContactClass, $iContactId)
+          <code><![CDATA[	public function GetPublicObjectDetails($sContactClass, $iContactId)
 	{
-		$sEmailSubject = Dict::S('Approbation:ApprovalSubject');
-		return $sEmailSubject;
-	}]]></code>
-        </method>
-        <method id="GetEmailBody">
-          <static>false</static>
-          <access>public</access>
-          <type>Overload-DBObject</type>
-          <code><![CDATA[	public function GetEmailBody($sContactClass, $iContactId)
-	{
-		$sBody = Dict::S('Approbation:ApprovalBody');
+		$sBody = Dict::S('Approbation:PublicObjectDetails');
 		return $sBody;
 
 	}]]></code>

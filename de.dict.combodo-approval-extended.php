@@ -28,8 +28,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Auf Freigabe wartende Anfragen',
 	'Menu:Ongoing approval+' => 'Auf Freigabe wartende Anfragen',
-	'Approbation:ApprovalSubject' => 'Ihre Freigabeanfrage wurde erstellt $object->ref$',
-	'Approbation:ApprovalBody' => '<p>Sehr geehrte/r $approver->friendlyname$, bitte nehmen sie sich etwas Zeit, um Ticket $object->ref$ zu bearbeiten</p>
+	'Approbation:PublicObjectDetails' => '<p>Sehr geehrte/r $approver->friendlyname$, bitte nehmen sie sich etwas Zeit, um Ticket $object->ref$ zu bearbeiten</p>
 		<h3>Titel : $object->title$</h3>
 		<p>Beschreibung:</p>
 		<pre>$object->description$</pre>

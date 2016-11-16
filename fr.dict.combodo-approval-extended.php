@@ -27,9 +27,7 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Requêtes en attente d\'approbation',
 	'Menu:Ongoing approval+' => 'Requêtes en attente d\'approbation',
-	'Approbation:ApprovalSubject' => 'Votre approbation est attendue : $object->ref$',
-
-	'Approbation:ApprovalBody' => '<p>Cher $approver->friendlyname$, merci de prendre le temps d\'approuver le ticket $object->ref$</p>
+	'Approbation:PublicObjectDetails' => '<p>Cher $approver->friendlyname$, merci de prendre le temps d\'approuver le ticket $object->ref$</p>
 				      <b>Demandeur:</b>$object->caller_id_friendlyname$<br>
 				      <b>Titre:</b>$object->title$<br>
 				      <b>Service:</b>$object->service_name$<br>

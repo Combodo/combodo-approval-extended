@@ -16,7 +16,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-approval-extended/1.1.0',
+	'combodo-approval-extended/1.2.0',
 	array(
 		// Identification
 		//
@@ -33,6 +33,7 @@ SetupWebPage::AddModule(
 		),
 		'mandatory' => false,
 		'visible' => true,
+		'installer' => 'ApprovalExtendedInstaller',
 
 		// Components
 		//
@@ -64,5 +65,107 @@ SetupWebPage::AddModule(
 	)
 );
 
+if (!class_exists('ApprovalExtendedInstaller'))
+{
+	// Module installation handler
+	//
+	class ApprovalExtendedInstaller extends ModuleInstallerAPI
+	{
+		public static function BeforeWritingConfig(Config $oConfiguration)
+		{
+			// If you want to override/force some configuration values, do it here
+			return $oConfiguration;
+		}
 
-?>
+		/**
+		 * Handler called before creating or upgrading the database schema
+		 * @param $oConfiguration Config The new configuration of the application
+		 * @param $sPreviousVersion string PRevious version number of the module (empty string in case of first install)
+		 * @param $sCurrentVersion string Current version number of the module
+		 */
+		public static function BeforeDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
+		{
+		}
+
+		/**
+		 * Handler called after the creation/update of the database schema
+		 * @param $oConfiguration Config The new configuration of the application
+		 * @param $sPreviousVersion string PRevious version number of the module (empty string in case of first install)
+		 * @param $sCurrentVersion string Current version number of the module
+		 */
+		public static function AfterDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
+		{
+			if (version_compare($sPreviousVersion, '1.2.0', '<'))
+			{
+				SetupPage::log_info("Upgrading combodo-approval-extended from '$sPreviousVersion' to '$sCurrentVersion'. Starting with 1.2.0, the extension requires a set of trigger/actions that will created into the DB...");
+
+				$oTrigger = MetaModel::NewObject('TriggerOnApprovalRequest');
+				$oTrigger->Set('description', 'Approval requested');
+				$oTrigger->Set('target_class', 'UserRequest');
+				$oTrigger->DBInsert();
+
+				$oAction = MetaModel::NewObject('ActionEmailApprovalRequest');
+				$oAction->Set('name', 'Approval request (EN)');
+				$oAction->Set('description', 'Sample message, automatically created when upgrading');
+				$oAction->Set('status', 'enabled');
+				$oAction->Set('subject', 'Your approval is requested: $this->ref$');
+				$oAction->Set('subject_reminder', 'Your approval is requested: $this->ref$ (reminder)');
+				$oAction->Set('body', '<h3>Your approval is requested: $this->ref$</h3>
+					<p>Dear $approver->friendlyname$, please take some time to approve or reject ticket $this->ref$</p>
+					<b>Caller:</b>$this->caller_id_friendlyname$<br>
+					<b>Title:</b>$this->title$<br>
+					<b>Service:</b>$this->service_name$<br>
+					<b>Service subcategory:</b>$this->servicesubcategory_name$<br>
+					<b>Description</b>				     
+					<pre>$this->description$</pre>
+					<b>Additional information:</b>
+					<pre>$this->head(public_log)$</pre>
+					<p>$approval_link$</p>'
+				);
+				$oAction->DBInsert();
+
+				$oAction = MetaModel::NewObject('ActionEmailApprovalRequest');
+				$oAction->Set('name', 'Approval request (FR)');
+				$oAction->Set('description', 'Sample message, automatically created when upgrading');
+				$oAction->Set('status', 'enabled');
+				$oAction->Set('subject', 'Votre approbation est attendue : $this->ref$');
+				$oAction->Set('subject_reminder', 'Votre approbation est attendue : $this->ref$ (relance)');
+				$oAction->Set('body', '<h3>Votre approbation est attendue : $this->ref$</h3>
+					<p>Cher $approver->friendlyname$, merci de prendre le temps d\'approuver le ticket $this->ref$</p>
+					<b>Demandeur:</b>$this->caller_id_friendlyname$<br>
+					<b>Titre:</b>$this->title$<br>
+					<b>Service:</b>$this->service_name$<br>
+					<b>Sous catégorie de service:</b>$this->servicesubcategory_name$<br>
+					<b>Description</b>				     
+					<pre>$this->description$</pre>
+					<b>Information complémentaire:</b>
+					<pre>$this->head(public_log)$</pre>
+					<p>$approval_link$</p>
+				');
+				$oAction->DBInsert();
+
+				$oAction = MetaModel::NewObject('ActionEmailApprovalRequest');
+				$oAction->Set('name', 'Approval request (DE)');
+				$oAction->Set('description', 'Sample message, automatically created when upgrading');
+				$oAction->Set('status', 'enabled');
+				$oAction->Set('subject', 'Ihre Freigabeanfrage wurde erstellt $this->ref$');
+				$oAction->Set('subject_reminder', 'Ihre Freigabeanfrage wurde erstellt $this->ref$ (Erinnerung)');
+				$oAction->Set('body', '<h3>Ihre Freigabeanfrage wurde erstellt $this->ref$</h3>
+					<p>Sehr geehrte/r $approver->friendlyname$, bitte nehmen sie sich etwas Zeit, um Ticket $this->ref$ zu bearbeiten</p>
+					<h3>Titel : $this->title$</h3>
+					<p>Beschreibung:</p>
+					<pre>$this->description$</pre>
+					<p>Ersteller: $this->caller_id_friendlyname$</p>
+					<p>Service: $this->service_name$</p>
+					<p>Servicekategorie: $this->servicesubcategory_name$</p>
+					<p>Details:</p>
+					<pre>$this->public_log$</pre>
+					<p>$approval_link$</p>
+				');
+				$oAction->DBInsert();
+
+				SetupPage::log_info("... sample trigger/actions successfully created.");
+			}
+		}
+	}
+}
