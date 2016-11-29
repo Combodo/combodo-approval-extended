@@ -28,18 +28,18 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Auf Freigabe wartende Anfragen',
 	'Menu:Ongoing approval+' => 'Auf Freigabe wartende Anfragen',
-	'Approbation:PublicObjectDetails' => '<p>Sehr geehrte/r $approver->friendlyname$, bitte nehmen sie sich etwas Zeit, um Ticket $object->ref$ zu bearbeiten</p>
-		<h3>Titel : $object->title$</h3>
+	'Approbation:PublicObjectDetails' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um Ticket $object->html(ref)$ zu bearbeiten</p>
+		<h3>Titel : $object->html(title)$</h3>
 		<p>Beschreibung:</p>
-		<pre>$object->description$</pre>
-		<p>Ersteller: $object->caller_id_friendlyname$</p>
-		<p>Service: $object->service_name$</p>
-		<p>Servicekategorie: $object->servicesubcategory_name$</p>
+		$object->html(description)$
+		<p>Ersteller: $object->html(caller_id_friendlyname)$</p>
+		<p>Service: $object->html(service_name)$</p>
+		<p>Servicekategorie: $object->html(servicesubcategory_name)$</p>
 		<p>Details:</p>
-		<pre>$object->public_log$</pre>',
-	'Approbation:FormBody' => '<p>Sehr geehrte/r $approver->friendlyname$, bitte nehmen sie sich etwas Zeit, um das Ticket zu bearbeiten</p>',
+		<div>$object->head(service_details)$</div>',
+	'Approbation:FormBody' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um das Ticket zu bearbeiten</p>',
 	'Approbation:ApprovalRequested' => 'Ihre Freigabeanfrage wurde erstellt',
-	'Approbation:Introduction' => '<p>Sehr geehrte/r $approver->friendlyname$, bitte nehmen sie sich etwas Zeit, um $object->friendlyname$ Ticket zu bearbeiten</p>',
+	'Approbation:Introduction' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um $object->html(friendlyname)$ Ticket zu bearbeiten</p>',
 ));
 
 //
