@@ -36,7 +36,7 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 		<p>Service: $object->html(service_name)$</p>
 		<p>Servicekategorie: $object->html(servicesubcategory_name)$</p>
 		<p>Details:</p>
-		<div>$object->head(service_details)$</div>',
+		<div>$object->html(service_details)$</div>',
 	'Approbation:FormBody' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um das Ticket zu bearbeiten</p>',
 	'Approbation:ApprovalRequested' => 'Ihre Freigabeanfrage wurde erstellt',
 	'Approbation:Introduction' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um $object->html(friendlyname)$ Ticket zu bearbeiten</p>',
