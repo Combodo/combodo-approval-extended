@@ -28,18 +28,18 @@ Dict::Add('EN US', 'English', 'English', array(
 	'Menu:Ongoing approval' => 'Requests waiting for approval',
 	'Menu:Ongoing approval+' => 'Requests waiting for approval',
 	'Approbation:ApprovalSubject' => 'Your approval is requested: $object->ref$',
-	'Approbation:ApprovalBody' => '<p>Dear $approver->friendlyname$, please take some time to approve or reject ticket $object->ref$</p>
-				      <b>Caller:</b>$object->caller_id_friendlyname$<br>
-				      <b>Title:</b>$object->title$<br>
-				      <b>Service:</b>$object->service_name$<br>
-				      <b>Service subcategory:</b>$object->servicesubcategory_name$<br>
+	'Approbation:ApprovalBody' => '<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject ticket $object->html(ref)$</p>
+				      <b>Caller:</b>$object->html(caller_id_friendlyname)$<br>
+				      <b>Title:</b>$object->html(title)$<br>
+				      <b>Service:</b>$object->html(service_name)$<br>
+				      <b>Service subcategory:</b>$object->html(servicesubcategory_name)$<br>
 				      <b>Description</b>				     
-				      <pre>$object->description$</pre>
+				      <pre>$object->html(description)$</pre>
 				      <b>Additional information:</b>
-				      <pre>$object->head(public_log)$</pre>',
-	'Approbation:FormBody' => '<p>Dear $approver->friendlyname$, please take some time to approve or reject the ticket</p>',
+				      <div>$object->html(service_details)$</div>',
+	'Approbation:FormBody' => '<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject the ticket</p>',
 	'Approbation:ApprovalRequested' => 'Your approval is requested',
-	'Approbation:Introduction' => '<p>Dear $approver->friendlyname$, please take some time to approve or reject ticket $object->friendlyname$</p>',
+	'Approbation:Introduction' => '<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject ticket $object->html(friendlyname)$</p>',
 
 
 ));

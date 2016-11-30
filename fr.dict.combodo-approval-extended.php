@@ -29,18 +29,18 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'Menu:Ongoing approval+' => 'Requêtes en attente d\'approbation',
 	'Approbation:ApprovalSubject' => 'Votre approbation est attendue : $object->ref$',
 
-	'Approbation:ApprovalBody' => '<p>Cher $approver->friendlyname$, merci de prendre le temps d\'approuver le ticket $object->ref$</p>
-				      <b>Demandeur:</b>$object->caller_id_friendlyname$<br>
-				      <b>Titre:</b>$object->title$<br>
-				      <b>Service:</b>$object->service_name$<br>
-				      <b>Sous catégorie de service:</b>$object->servicesubcategory_name$<br>
+	'Approbation:ApprovalBody' => '<p>Cher $approver->html(friendlyname)$, merci de prendre le temps d\'approuver le ticket $object->html(ref)$</p>
+				      <b>Demandeur:</b>$object->html(caller_id_friendlyname)$<br>
+				      <b>Titre:</b>$object->html(title)$<br>
+				      <b>Service:</b>$object->html(service_name)$<br>
+				      <b>Sous catégorie de service:</b>$object->html(servicesubcategory_name)$<br>
 				      <b>Description</b>				     
-				      <pre>$object->description$</pre>
+				      <pre>$object->html(description)$</pre>
 				      <b>Information complémentaire:</b>
-				      <pre>$object->head(public_log)$</pre>',
-	'Approbation:FormBody' => '<p>Cher $approver->friendlyname$, merci de prendre le temps d\'approuver le ticket</p>',
+				      <div>$object->html(service_details)$</div>',
+	'Approbation:FormBody' => '<p>Cher $approver->html(friendlyname)$, merci de prendre le temps d\'approuver le ticket</p>',
 	'Approbation:ApprovalRequested' => 'Votre approbation est attendue',
-	'Approbation:Introduction' => '<p>Cher $approver->friendlyname$, merci de prendre le temps d\'approuver le ticket $object->friendlyname$</p>',
+	'Approbation:Introduction' => '<p>Cher $approver->html(friendlyname)$, merci de prendre le temps d\'approuver le ticket $object->html(friendlyname)$</p>',
 
 
 ));
