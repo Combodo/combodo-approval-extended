@@ -339,75 +339,52 @@
 			array(),
 			array('servicesubcategory' => $oObject->Get('servicesubcategory_id'))
 		);
-
-		// check for level1 rules
 		if ($oApprovalRuleSet->count() == 0)
 		{
+			// No approval rule applies to the current object
 			return null;
 		}
+
+		$bReusePreviousAnswers = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'reuse_previous_answers', true);
 
 		$oApprovalRule = $oApprovalRuleSet->fetch();
-		$sApproverLevel1 = $oApprovalRule->Get('level1_rule');
+		$oScheme = new ExtendedApprovalScheme();
 
-		$oApproverLevel1Set = new DBObjectSet(DBObjectSearch::FromOQL($sApproverLevel1), array(), $oObject->ToArgs('this'));
-		if ($oApproverLevel1Set->count() == 0)
+		$bStepAdded = false;
+
+		if ($oScheme->AddStepFromQuery(
+			$oObject,
+			$oApprovalRule->Get('level1_rule'),
+			$oApprovalRule->Get('level1_timeout')*3600,
+			($oApprovalRule->Get('level1_default_approval') == 'yes'),
+			$aExitConditionCodes[$oApprovalRule->Get('level1_exit_condition')],
+			$bReusePreviousAnswers
+		))
+		{
+			$bStepAdded = true;
+		}
+
+		if ($oScheme->AddStepFromQuery(
+			$oObject,
+			$oApprovalRule->Get('level2_rule'),
+			$oApprovalRule->Get('level2_timeout')*3600,
+			($oApprovalRule->Get('level2_default_approval') == 'yes'),
+			$aExitConditionCodes[$oApprovalRule->Get('level2_exit_condition')],
+			$bReusePreviousAnswers
+		))
+		{
+			$bStepAdded = true;
+		}
+
+		if ($bStepAdded)
+		{
+			$oObject->ApplyStimulus('ev_wait_for_approval');
+			return $oScheme;
+		}
+		else
 		{
 			return null;
 		}
-
-		$oObject->ApplyStimulus('ev_wait_for_approval');
-
-		$oScheme = new ExtendedApprovalScheme();
-		$aContacts = array();
-		while ($oApproverLevel1 = $oApproverLevel1Set->Fetch())
-		{
-			$sType = get_class($oApproverLevel1);
-			$aContacts[] = array(
-				'class' => $sType,
-				'id' => $oApproverLevel1->GetKey(),
-			);
-		}
-		$bApproveOnTimeout = ($oApprovalRule->Get('level1_default_approval') == 'yes');
-		$iExitCondition = $aExitConditionCodes[$oApprovalRule->Get('level1_exit_condition')];
-		$bReusePreviousAnswers = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'reuse_previous_answers', true);
-		$oScheme->AddStep(
-			$aContacts,
-			$oApprovalRule->Get('level1_timeout')*3600,
-			$bApproveOnTimeout,
-			$iExitCondition,
-			$bReusePreviousAnswers
-		);
-
-		// check for level2 rules
-		$sApproverLevel2 = $oApprovalRule->Get('level2_rule');
-		if ($sApproverLevel2 != '')
-		{
-			$oApproverLevel2Set = new DBObjectSet(DBObjectSearch::FromOQL($sApproverLevel2), array(), $oObject->ToArgs('this'));
-			if ($oApproverLevel2Set->count() != 0)
-			{
-				$aContacts = array();
-				while ($oApproverLevel2 = $oApproverLevel2Set->Fetch())
-				{
-					$sType = get_class($oApproverLevel2);
-					$aContacts[] = array(
-						'class' => $sType,
-						'id' => $oApproverLevel2->GetKey(),
-					);
-				}
-				$bApproveOnTimeout = ($oApprovalRule->Get('level2_default_approval') == 'yes');
-				$iExitCondition = $aExitConditionCodes[$oApprovalRule->Get('level2_exit_condition')];
-				$bReusePreviousAnswers = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'reuse_previous_answers', true);
-				$oScheme->AddStep(
-					$aContacts,
-					$oApprovalRule->Get('level2_timeout')*3600,
-					$bApproveOnTimeout,
-					$iExitCondition,
-					$bReusePreviousAnswers
-				);
-			}
-		}
-
-		return $oScheme;
 	}]]></code>
         </method>
         <method id="GetPublicObjectDetails">

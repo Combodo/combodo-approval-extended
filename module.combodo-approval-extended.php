@@ -16,7 +16,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-approval-extended/1.2.2',
+	'combodo-approval-extended/1.2.3',
 	array(
 		// Identification
 		//
@@ -26,7 +26,7 @@ SetupWebPage::AddModule(
 		// Setup
 		//
 		'dependencies' => array(
-			'approval-base/2.5.0',
+			'approval-base/2.5.1',
 			'itop-service-mgmt/2.0.0||itop-service-mgmt-provider/2.0.0',
 			'itop-request-mgmt-itil/2.0.0||itop-request-mgmt/2.0.0',
 			'combodo-sla-computation/1.0.0',
