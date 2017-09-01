@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2013 Combodo SARL
+// Copyright (C) 2013-2017 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 
 
 /**
- * Module approval-demo
+ * Module approval-extended
  *
  * @author      Erwan Taloc <erwan.taloc@combodo.com>
  * @author      Romain Quetiez <romain.quetiez@combodo.com>
@@ -218,6 +218,3 @@ class ApprovalFromUI implements iPopupMenuExtension
 		return ApprovalScheme::GetPopMenuItems($iMenuId, $param);
 	}
 }
-
-$oMyMenuGroup = new MenuGroup('RequestManagement', 30 /* fRank */);
-new WebPageMenuNode('Ongoing approval', utils::GetAbsoluteUrlModulePage('approval-base', 'report.php', array('class' => 'UserRequest', 'do_filter_my_approvals' => 'on')), $oMyMenuGroup->GetIndex(), 6);

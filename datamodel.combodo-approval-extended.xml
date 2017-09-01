@@ -521,5 +521,10 @@
       <oql>SELECT ApprovalRule</oql>
       <do_search>1</do_search>
     </menu>
+      <menu id="Ongoing approval" xsi:type="WebPageMenuNode" _delta="define">
+        <rank>6</rank>
+          <parent>RequestManagement</parent>
+          <url>$pages/exec.php?exec_module=approval-base&amp;exec_page=report.php&amp;class=UserRequest&amp;do_filter_my_approvals=on</url>
+      </menu>
   </menus>
 </itop_design>
