@@ -21,6 +21,7 @@
  * @author      Romain Quetiez <romain.quetiez@combodo.com>
  * @author      Denis Flaven <denis.flaven@combodo.com>
  * @author      Robert Jaehne <robert.jaehne@itomig.de>
+ * @author      Lars Hippler <lars.hippler@itomig.de>
  * @license     http://www.opensource.org/licenses/gpl-3.0.html LGPL
  */
 
@@ -63,6 +64,14 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:yes+' => 'ja',
 	'Class:ApprovalRule/Attribute:level1_timeout' => 'Level 1 Freigabeverzögerung (Stunden)',
 	'Class:ApprovalRule/Attribute:level1_timeout+' => '',
+	'Class:ApprovalRule/Attribute:level1_exit_condition' => 'Abschlussbedingung Level 1',
+	'Class:ApprovalRule/Attribute:level1_exit_condition+' => 'Bedingung wann Level 1 abgeschlossen wird.',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reply' => 'Endet mit der ersten Rückmeldung',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reply+' => 'Die erste Rückmeldung bestimmt über die Freigabe in Level 1',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reject' => 'Endet mit der ersten Ablehnung',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reject+' => 'Jeder einzelne muss die Genehmigung aussprechen',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve' => 'Endet mit der ersten Genehmigung',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve+' => 'Nur eine Person muss die Genehmigung aussprechen',
 	'Class:ApprovalRule/Attribute:level2_rule' => 'Freigabe Level 2',
 	'Class:ApprovalRule/Attribute:level2_rule+' => '',
 	'Class:ApprovalRule/Attribute:level2_default_approval' => 'Automatisch freigeben, wenn keine Antwort in Level 2',
@@ -73,7 +82,15 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Class:ApprovalRule/Attribute:level2_default_approval/Value:yes+' => 'ja',
 	'Class:ApprovalRule/Attribute:level2_timeout' => 'Level 2 Freigabeverzögerung (Stunden)',
 	'Class:ApprovalRule/Attribute:level2_timeout+' => '',
-	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Service-Unterkategorie',
+	'Class:ApprovalRule/Attribute:level2_exit_condition' => 'Abschlussbedingung Level 2',
+	'Class:ApprovalRule/Attribute:level2_exit_condition+' => 'Bedingung wann Level 2 abgeschlossen wird.',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reply' => 'Endet mit der ersten Rückmeldung',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reply+' => 'Die erste Rückmeldung bestimmt über die Freigabe in Level 2',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reject' => 'Endet mit der ersten Ablehnung',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reject+' => 'Jeder einzelne muss die Genehmigung aussprechen',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve' => 'Endet mit der ersten Genehmigung',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve+' => 'Nur eine Person muss die Genehmigung aussprechen',
+	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Service-Unterkategorien',
 	'Class:ApprovalRule/Attribute:servicesubcategory_list+' => '',
 	'Class:ApprovalRule/Attribute:coveragewindow_id' => 'Zeitfenster',
 	'Class:ApprovalRule/Attribute:coveragewindow_id+' => '',
