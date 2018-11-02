@@ -13,7 +13,6 @@
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 /**
  * Localized data
  *
@@ -22,8 +21,7 @@
  * @author      Denis Flaven <denis.flaven@combodo.com>
  * @license     http://www.opensource.org/licenses/gpl-3.0.html LGPL
  */
-
-Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
+Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Requerimientos esperando Aprobación',
 	'Menu:Ongoing approval+' => 'Requerimientos esperando Aprobación',
@@ -47,7 +45,7 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 // Class: ApprovalRule
 //
 
-Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
+Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'Class:ApprovalRule' => 'Regla de Aprobación',
 	'Class:ApprovalRule+' => '',
 	'Class:ApprovalRule/Attribute:name' => 'Nombre',
@@ -102,7 +100,7 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 // Class: ServiceSubcategory
 //
 
-Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
+Dict::Add('ES CR', 'Spanish', 'Español, Castellaño', array(
 	'Class:ServiceSubcategory/Attribute:approvalrule_id' => 'Regla de Aprobación',
 	'Class:ServiceSubcategory/Attribute:approvalrule_id+' => '',
 	'Class:ServiceSubcategory/Attribute:approvalrule_name' => 'Nombre Regla de Aprobación',

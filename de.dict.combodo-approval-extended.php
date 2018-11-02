@@ -13,7 +13,6 @@
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
 /**
  * Localized data
  *
@@ -24,7 +23,6 @@
  * @author      Lars Hippler <lars.hippler@itomig.de>
  * @license     http://www.opensource.org/licenses/gpl-3.0.html LGPL
  */
-
 Dict::Add('DE DE', 'German', 'Deutsch', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Auf Freigabe wartende Anfragen',
@@ -41,6 +39,8 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Approbation:FormBody' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um das Ticket zu bearbeiten</p>',
 	'Approbation:ApprovalRequested' => 'Ihre Freigabeanfrage wurde erstellt',
 	'Approbation:Introduction' => '<p>Sehr geehrte/r $approver->html(friendlyname)$, bitte nehmen sie sich etwas Zeit, um $object->html(friendlyname)$ Ticket zu bearbeiten</p>',
+
+
 ));
 
 //
