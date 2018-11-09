@@ -307,7 +307,9 @@
         <display_template></display_template>
         <icon></icon>
         <reconciliation>
-          <attributes/>
+          <attributes>
+            <attribute id="label"/>
+          </attributes>
         </reconciliation>
       </properties>
       <fields/>
