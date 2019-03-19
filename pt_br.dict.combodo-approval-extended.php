@@ -112,3 +112,12 @@ Dict::Add('PT BR', 'Brazilian', 'Brazilian', array(
 	'Menu:ApprovalRule+' => 'Todas as regras de aprovação',
 
 ));
+
+//
+// Class: ExtendedApprovalScheme
+//
+
+Dict::Add('PT BR', 'Brazilian', 'Brazilian', array(
+	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
+	'Class:ExtendedApprovalScheme+' => '~~',
+));

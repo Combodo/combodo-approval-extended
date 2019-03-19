@@ -112,3 +112,12 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'Menu:ApprovalRule+' => 'Toutes les règles d\'approbation',
 
 ));
+
+//
+// Class: ExtendedApprovalScheme
+//
+
+Dict::Add('FR FR', 'French', 'Français', array(
+	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
+	'Class:ExtendedApprovalScheme+' => '~~',
+));

@@ -20,7 +20,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with iTop. If not, see <http://www.gnu.org/licenses/>
  */
-
 Dict::Add('IT IT', 'Italian', 'Italiano', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Requests waiting for approval~~',
@@ -111,4 +110,13 @@ Dict::Add('IT IT', 'Italian', 'Italiano', array(
 	'Menu:ApprovalRule' => 'Approval rules~~',
 	'Menu:ApprovalRule+' => 'All approval rules~~',
 
+));
+
+//
+// Class: ExtendedApprovalScheme
+//
+
+Dict::Add('IT IT', 'Italian', 'Italiano', array(
+	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
+	'Class:ExtendedApprovalScheme+' => '~~',
 ));

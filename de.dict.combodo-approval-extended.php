@@ -114,3 +114,12 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Menu:ApprovalRule+' => 'Alle Freigaberegeln',
 
 ));
+
+//
+// Class: ExtendedApprovalScheme
+//
+
+Dict::Add('DE DE', 'German', 'Deutsch', array(
+	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
+	'Class:ExtendedApprovalScheme+' => '~~',
+));
