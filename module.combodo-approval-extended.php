@@ -108,6 +108,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 				$oAction->Set('name', 'Approval request (EN)');
 				$oAction->Set('description', 'Sample message, automatically created when upgrading');
 				$oAction->Set('status', 'enabled');
+				$oAction->Set('from', ActionEmailApprovalRequest::GetDefaultEmailSender());
 				$oAction->Set('subject', 'Your approval is requested: $this->ref$');
 				$oAction->Set('subject_reminder', 'Your approval is requested: $this->ref$ (reminder)');
 				$oAction->Set('body', '<h3>Your approval is requested: $this->html(ref)$</h3>
@@ -128,6 +129,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 				$oAction->Set('name', 'Approval request (FR)');
 				$oAction->Set('description', 'Sample message, automatically created when upgrading');
 				$oAction->Set('status', 'enabled');
+				$oAction->Set('from', ActionEmailApprovalRequest::GetDefaultEmailSender());
 				$oAction->Set('subject', 'Votre approbation est attendue : $this->ref$');
 				$oAction->Set('subject_reminder', 'Votre approbation est attendue : $this->ref$ (relance)');
 				$oAction->Set('body', '<h3>Votre approbation est attendue : $this->html(ref)$</h3>
@@ -148,6 +150,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 				$oAction->Set('name', 'Approval request (DE)');
 				$oAction->Set('description', 'Sample message, automatically created when upgrading');
 				$oAction->Set('status', 'enabled');
+				$oAction->Set('from', ActionEmailApprovalRequest::GetDefaultEmailSender());
 				$oAction->Set('subject', 'Ihre Freigabeanfrage wurde erstellt $this->ref$');
 				$oAction->Set('subject_reminder', 'Ihre Freigabeanfrage wurde erstellt $this->ref$ (Erinnerung)');
 				$oAction->Set('body', '<h3>Ihre Freigabeanfrage wurde erstellt $this->ref$</h3>
