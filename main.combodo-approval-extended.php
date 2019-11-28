@@ -34,109 +34,15 @@ class ApprovalComputeWorkingHours implements iWorkingTimeComputer
 	public function GetDeadline($oObject, $iDuration, DateTime $oStartDate)
 	{
 		$sCoverageOQL = 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
-		$oCoverage = null;
 
-		$sHolidaysOQL = MetaModel::GetModuleSetting('combodo-sla-computation', 'holidays_oql', '');
-		if ($sHolidaysOQL != '')
-		{
-			$oHolidaysSet = new DBObjectSet(DBObjectSearch::FromOQL($sHolidaysOQL), array(), array('this' => $oObject));
-		}
-		else
-		{
-			$oHolidaysSet = DBObjectSet::FromScratch('Holiday'); // Build an empty set
-		}
-
-		if ($sCoverageOQL != '')
-		{
-			$oCoverageSet = new DBObjectSet(DBObjectSearch::FromOQL($sCoverageOQL), array(), array('this' => $oObject));
-		}
-		else
-		{
-			$oCoverageSet = DBObjectSet::FromScratch('CoverageWindow');
-		}
-		switch($oCoverageSet->Count())
-		{
-			case 0:
-			// No coverage window: 24x7 computation
-			$oDeadline = clone $oStartDate;
-			$oDeadline->modify( '+'.$iDuration.' seconds');			
-			break;
-			
-			case 1:
-			$oCoverage = $oCoverageSet->Fetch();
-			$oDeadline = EnhancedSLAComputation::GetDeadlineFromCoverage($oCoverage, $oHolidaysSet, $iDuration, $oStartDate);
-			break;
-			
-			default:
-			$oDeadline = null;
-			// Several coverage windows found, use the one that gives the stricter deadline
-			while($oCoverage = $oCoverageSet->Fetch())
-			{
-				$oTmpDeadline = EnhancedSLAComputation::GetDeadlineFromCoverage($oCoverage, $oHolidaysSet, $iDuration, $oStartDate);
-				// Retain the nearer deadline
-				// According to the PHP documentation, the plain comparison operator between DateTime objects
-				// (i.e $oTmpDeadline < $oDeadline) is only implemented in PHP 5.2.2
-				if ( ($oDeadline == null) || ($oTmpDeadline->format('U') < $oDeadline->format('U')))
-				{
-					$oDeadline = $oTmpDeadline;
-				}			
-			}
-		}
-
-		return $oDeadline;
+		return EnhancedSLAComputation::GetDeadline($oObject, $iDuration, $oStartDate, $sCoverageOQL);
 	}
 	
 	public function GetOpenDuration($oObject, DateTime $oStartDate, DateTime $oEndDate)
 	{
 		$sCoverageOQL = 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
-		$oCoverage = null;
 
-		$sHolidaysOQL = MetaModel::GetModuleSetting('combodo-sla-computation', 'holidays_oql', '');
-		if ($sHolidaysOQL != '')
-		{
-			$oHolidaysSet = new DBObjectSet(DBObjectSearch::FromOQL($sHolidaysOQL), array(), array('this' => $oObject));
-		}
-		else
-		{
-			$oHolidaysSet = DBObjectSet::FromScratch('Holiday'); // Build an empty set
-		}
-
-		if ($sCoverageOQL != '')
-		{
-			$oCoverageSet = new DBObjectSet(DBObjectSearch::FromOQL($sCoverageOQL), array(), array('this' => $oObject));
-		}
-		else
-		{
-			$oCoverageSet = DBObjectSet::FromScratch('CoverageWindow');
-		}
-
-		switch($oCoverageSet->Count())
-		{
-			case 0:
-			// No coverage window: 24x7 computation.. what about holidays ??
-			$iDuration = EnhancedSLAComputation::GetOpenDuration($oObject, $oStartDate, $oEndDate);			
-			break;
-			
-			case 1:
-			$oCoverage = $oCoverageSet->Fetch();
-			$iDuration = EnhancedSLAComputation::GetOpenDurationFromCoverage($oCoverage, $oHolidaysSet, $oStartDate, $oEndDate);
- 	
-			break;
-			
-			default:
-			$iDuration = null;
-			// Several coverage windows found, use the one that gives the stricter deadline, thus the longer elasped duration
-			while($oCoverage = $oCoverageSet->Fetch())
-			{
-				$iTmpDuration = EnhancedSLAComputation::GetOpenDurationFromCoverage($oCoverage, $oHolidaysSet, $oStartDate, $oEndDate);
-				// Retain the longer duration
-				if (($iDuration == null) || ($iTmpDuration > $iDuration))
-				{
-					$iDuration = $iTmpDuration;
-				}			
-			}
-		}
-		return $iDuration;
+		return EnhancedSLAComputation::GetOpenDuration($oObject, $oStartDate, $oEndDate, $sCoverageOQL);
 	}
 }
 
