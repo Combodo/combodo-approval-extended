@@ -120,8 +120,8 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 //
 
 Dict::Add('DE DE', 'German', 'Deutsch', array(
-	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
-	'Class:ExtendedApprovalScheme+' => '~~',
+	'Class:ExtendedApprovalScheme' => 'Erweiterte Freigaberegeln',
+	'Class:ExtendedApprovalScheme+' => '',
 ));
 
 //
