@@ -121,3 +121,20 @@ Dict::Add('FR FR', 'French', 'Français', array(
 	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
 	'Class:ExtendedApprovalScheme+' => '~~',
 ));
+
+//
+// Class: UserRequest
+//
+
+Dict::Add('FR FR', 'French', 'Français', array(
+	'Class:UserRequest/Attribute:approver_id' => 'Approbateur',
+	'Class:UserRequest/Attribute:approver_id+' => '~~',
+	'Class:UserRequest/Attribute:approver_email' => 'Email de l\'approbateur',
+	'Class:UserRequest/Attribute:approver_email+' => '~~',
+	'Class:UserRequest/Stimulus:ev_approve' => 'Approuver',
+	'Class:UserRequest/Stimulus:ev_approve+' => '~~',
+	'Class:UserRequest/Stimulus:ev_reject' => 'Rejeter',
+	'Class:UserRequest/Stimulus:ev_reject+' => '~~',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval' => 'En attente d\'approbation',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval+' => '~~',
+));

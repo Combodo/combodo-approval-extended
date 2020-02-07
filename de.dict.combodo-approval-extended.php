@@ -123,3 +123,20 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
 	'Class:ExtendedApprovalScheme+' => '~~',
 ));
+
+//
+// Class: UserRequest
+//
+
+Dict::Add('DE DE', 'German', 'Deutsch', array(
+	'Class:UserRequest/Attribute:approver_id' => 'Approver id~~',
+	'Class:UserRequest/Attribute:approver_id+' => '~~',
+	'Class:UserRequest/Attribute:approver_email' => 'Approver email~~',
+	'Class:UserRequest/Attribute:approver_email+' => '~~',
+	'Class:UserRequest/Stimulus:ev_approve' => 'Approve~~',
+	'Class:UserRequest/Stimulus:ev_approve+' => '~~',
+	'Class:UserRequest/Stimulus:ev_reject' => 'Reject~~',
+	'Class:UserRequest/Stimulus:ev_reject+' => '~~',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval' => 'Wait for approval~~',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval+' => '~~',
+));
