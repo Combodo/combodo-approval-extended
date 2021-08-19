@@ -97,7 +97,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 		{
 			if (version_compare($sPreviousVersion, '1.2.0', '<'))
 			{
-				SetupPage::log_info("Upgrading combodo-approval-extended from '$sPreviousVersion' to '$sCurrentVersion'. Starting with 1.2.0, the extension requires a set of trigger/actions that will created into the DB...");
+				SetupLog::Info("Upgrading combodo-approval-extended from '$sPreviousVersion' to '$sCurrentVersion'. Starting with 1.2.0, the extension requires a set of trigger/actions that will created into the DB...");
 
 				$oTrigger = MetaModel::NewObject('TriggerOnApprovalRequest');
 				$oTrigger->Set('description', 'Approval requested');
@@ -167,7 +167,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 				');
 				$oAction->DBInsert();
 
-				SetupPage::log_info("... sample trigger/actions successfully created.");
+				SetupLog::Info("... sample trigger/actions successfully created.");
 			}
 		}
 	}
