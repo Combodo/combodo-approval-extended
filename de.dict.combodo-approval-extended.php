@@ -129,14 +129,14 @@ Dict::Add('DE DE', 'German', 'Deutsch', array(
 //
 
 Dict::Add('DE DE', 'German', 'Deutsch', array(
-	'Class:UserRequest/Attribute:approver_id' => 'Approver id~~',
-	'Class:UserRequest/Attribute:approver_id+' => '~~',
-	'Class:UserRequest/Attribute:approver_email' => 'Approver email~~',
-	'Class:UserRequest/Attribute:approver_email+' => '~~',
-	'Class:UserRequest/Stimulus:ev_approve' => 'Approve~~',
-	'Class:UserRequest/Stimulus:ev_approve+' => '~~',
-	'Class:UserRequest/Stimulus:ev_reject' => 'Reject~~',
-	'Class:UserRequest/Stimulus:ev_reject+' => '~~',
-	'Class:UserRequest/Stimulus:ev_wait_for_approval' => 'Wait for approval~~',
-	'Class:UserRequest/Stimulus:ev_wait_for_approval+' => '~~',
+	'Class:UserRequest/Attribute:approver_id' => 'Freigebender',
+	'Class:UserRequest/Attribute:approver_id+' => 'Freigebende',
+	'Class:UserRequest/Attribute:approver_email' => 'E-Mailadresse Freigebender',
+	'Class:UserRequest/Attribute:approver_email+' => 'E-Mailadressen Freigebender',
+	'Class:UserRequest/Stimulus:ev_approve' => 'Genehmigen',
+	'Class:UserRequest/Stimulus:ev_approve+' => 'Genehmigen',
+	'Class:UserRequest/Stimulus:ev_reject' => 'Ablehnen',
+	'Class:UserRequest/Stimulus:ev_reject+' => 'Ablehnen',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval' => 'Auf Freigabe warten',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval+' => 'Auf Freigabe warten',
 ));
