@@ -16,12 +16,12 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-approval-extended/1.3.0',
+	'combodo-approval-extended/1.3.1',
 	array(
 		// Identification
 		//
-		'label' => 'Enhanced Approval Schemes',
-		'category' => 'feature',
+		'label'        => 'Enhanced Approval Schemes',
+		'category'     => 'feature',
 
 		// Setup
 		//
@@ -31,7 +31,7 @@ SetupWebPage::AddModule(
 			'itop-request-mgmt-itil/2.0.0||itop-request-mgmt/2.0.0',
 			'combodo-sla-computation/2.3.0',
 		),
-		'mandatory' => false,
+		'mandatory'    => false,
 		'visible' => true,
 		'installer' => 'ApprovalExtendedInstaller',
 
