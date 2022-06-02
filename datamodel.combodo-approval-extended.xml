@@ -352,27 +352,33 @@
 		$oApprovalRule = $oApprovalRuleSet->fetch();
 		$oScheme = new ExtendedApprovalScheme();
 
-		$bStepAdded = false;
+    $bStepAdded = false;
 
-		if ($oScheme->AddStepFromQuery(
+    $aStep1Data = static::GetStepDataFromApprovalRule($oApprovalRule, 1);
+    if ($oScheme->AddStepFromQuery(
 			$oObject,
-			$oApprovalRule->Get('level1_rule'),
-			$oApprovalRule->Get('level1_timeout')*3600,
-			($oApprovalRule->Get('level1_default_approval') == 'yes'),
-			$aExitConditionCodes[$oApprovalRule->Get('level1_exit_condition')],
-			$bReusePreviousAnswers
+			$aStep1Data['rule'],
+			$aStep1Data['timeout'],
+			$aStep1Data['default_approval'],
+			$aExitConditionCodes[$aStep1Data['exit_condition']],
+			$bReusePreviousAnswers,
+			$aStep1Data['substitute_query'],
+			$aStep1Data['substitute_timeout']
 		))
 		{
 			$bStepAdded = true;
 		}
 
+    $aStep2Data = static::GetStepDataFromApprovalRule($oApprovalRule, 2);
 		if ($oScheme->AddStepFromQuery(
 			$oObject,
-			$oApprovalRule->Get('level2_rule'),
-			$oApprovalRule->Get('level2_timeout')*3600,
-			($oApprovalRule->Get('level2_default_approval') == 'yes'),
-			$aExitConditionCodes[$oApprovalRule->Get('level2_exit_condition')],
-			$bReusePreviousAnswers
+			$aStep2Data['rule'],
+			$aStep2Data['timeout'],
+			$aStep2Data['default_approval'],
+			$aExitConditionCodes[$aStep2Data['exit_condition']],
+			$bReusePreviousAnswers,
+			$aStep2Data['substitute_query'],
+			$aStep2Data['substitute_timeout']
 		))
 		{
 			$bStepAdded = true;
@@ -387,6 +393,28 @@
 		{
 			return null;
 		}
+	}]]></code>
+        </method>
+        <method id="GetStepDataFromApprovalRule">
+          <static>true</static>
+          <access>protected</access>
+          <type>Overload-DBObject</type>
+          <code><![CDATA[
+	/**
+   * @param \ApprovalScheme $oScheme
+   * @param int $iLevel
+   * @return array{rule: string, timeout: int, default_approval: boolean, exit_condition: string, substitute_query: string, substitute_timeout: int}
+   */
+	public static function GetStepDataFromApprovalRule($oApprovalRule, $iLevel)
+	{
+	  return [
+	      'rule' => $oApprovalRule->Get("level{$iLevel}_rule"),
+	      'timeout' => $oApprovalRule->Get("level{$iLevel}_timeout") * 3600,
+	      'default_approval' => ($oApprovalRule->Get("level{$iLevel}_default_approval") == 'yes'),
+	      'exit_condition' => $oApprovalRule->Get("level{$iLevel}_exit_condition"),
+	      'substitute_query' => '',
+	      'substitute_timeout' => 0,
+    ];
 	}]]></code>
         </method>
         <method id="GetPublicObjectDetails">
