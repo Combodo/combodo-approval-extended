@@ -602,7 +602,8 @@
 	{
 	  $sTargetApprovalRequest = $this->Get('target_approval_request');
 	  if ($sTargetApprovalRequest !== 'both') {
-        $bSubstitueTrigger = array_key_exists('on_behalf_of', $aContextArgs);
+        $bSubstitueTrigger = array_key_exists('on_behalf_of', $aContextArgs)
+            || array_key_exists('on_behalf_of->object()', $aContextArgs); // `->object()` was added in approval-base 3.2.2 (e7805ded)
         if ((false === $bSubstitueTrigger) && ($sTargetApprovalRequest === 'substitutes')) {
           return;
         }
