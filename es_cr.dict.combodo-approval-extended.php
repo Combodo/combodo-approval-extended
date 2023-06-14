@@ -13,8 +13,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with this program; if not, write to the Free Software
 //   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
- /**
+/**
  * Spanish Localized data
  *
  * @copyright   Copyright (C) 2010-2021 Combodo SARL
@@ -70,6 +69,10 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reject+' => 'Todos deben aprobar',
 	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve' => 'termina con la primer "Aprobación"',
 	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve+' => 'Solo una aprobación es requerida',
+	'Class:ApprovalRule/Attribute:level1_substitute_query' => 'Substitute L1~~',
+	'Class:ApprovalRule/Attribute:level1_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
+	'Class:ApprovalRule/Attribute:level1_substitute_timeout' => 'Substitute notification delay L1~~',
+	'Class:ApprovalRule/Attribute:level1_substitute_timeout+' => 'Substitutes will be notified if approver has not answered before this percentage of the approval delay~~',
 	'Class:ApprovalRule/Attribute:level2_rule' => 'Aprobación Nivel 2',
 	'Class:ApprovalRule/Attribute:level2_rule+' => '',
 	'Class:ApprovalRule/Attribute:level2_default_approval' => 'Aprobar automaticamente si no hay respuesta en Nivel 2',
@@ -88,6 +91,10 @@ Dict::Add('ES CR', 'Spanish', 'Español, Castellano', array(
 	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reject+' => 'Todos deben aprobar',
 	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve' => 'termina con la primer "Aprobación"',
 	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve+' => 'Solo una aprobación es requerida',
+	'Class:ApprovalRule/Attribute:level2_substitute_query' => 'Substitute L2~~',
+	'Class:ApprovalRule/Attribute:level2_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
+	'Class:ApprovalRule/Attribute:level2_substitute_timeout' => 'Substitute notification delay L2~~',
+	'Class:ApprovalRule/Attribute:level2_substitute_timeout+' => 'Substitutes will be notified if approver has not answered before this percentage of the approval delay~~',
 	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Subcategoria de Servicio',
 	'Class:ApprovalRule/Attribute:servicesubcategory_list+' => '',
 	'Class:ApprovalRule/Attribute:coveragewindow_id' => 'Ventana de Cobertura',

@@ -2,7 +2,7 @@
 /**
  * Localized data
  *
- * @copyright Copyright (C) 2010-2018 Combodo SARL
+ * @copyright Copyright (C) 2010-2020 Combodo SARL
  * @license	http://opensource.org/licenses/AGPL-3.0
  *
  * This file is part of iTop.
@@ -20,7 +20,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with iTop. If not, see <http://www.gnu.org/licenses/>
  */
-Dict::Add('IT IT', 'Italian', 'Italiano', array(
+
+Dict::Add('PL PL', 'Polish', 'Polski', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Requests waiting for approval~~',
 	'Menu:Ongoing approval+' => 'Requests waiting for approval~~',
@@ -44,52 +45,52 @@ Dict::Add('IT IT', 'Italian', 'Italiano', array(
 // Class: ApprovalRule
 //
 
-Dict::Add('IT IT', 'Italian', 'Italiano', array(
+Dict::Add('PL PL', 'Polish', 'Polski', array(
 	'Class:ApprovalRule' => 'Approval rule~~',
 	'Class:ApprovalRule+' => '~~',
 	'Class:ApprovalRule/Attribute:name' => 'Name~~',
 	'Class:ApprovalRule/Attribute:name+' => '~~',
 	'Class:ApprovalRule/Attribute:description' => 'Description~~',
 	'Class:ApprovalRule/Attribute:description+' => '~~',
-	'Class:ApprovalRule/Attribute:level1_rule' => 'Approval Level 1~~',
-	'Class:ApprovalRule/Attribute:level1_rule+' => '~~',
-	'Class:ApprovalRule/Attribute:level1_default_approval' => 'Automatically approved if no answer at Level 1~~',
-	'Class:ApprovalRule/Attribute:level1_default_approval+' => '~~',
+	'Class:ApprovalRule/Attribute:level1_rule' => 'Approvers L1~~',
+	'Class:ApprovalRule/Attribute:level1_rule+' => 'OQL to retrieve the Approvers appropriate for the Ticket, using placeholder like `:this->caller_id`~~',
+	'Class:ApprovalRule/Attribute:level1_default_approval' => 'Approved if no answer L1~~',
+	'Class:ApprovalRule/Attribute:level1_default_approval+' => 'Automatically approved if no answer from neither approvers nor substitutes~~',
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:no' => 'no~~',
-	'Class:ApprovalRule/Attribute:level1_default_approval/Value:no+' => 'no~~',
+	'Class:ApprovalRule/Attribute:level1_default_approval/Value:no+' => '~~',
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:yes' => 'yes~~',
-	'Class:ApprovalRule/Attribute:level1_default_approval/Value:yes+' => 'yes~~',
-	'Class:ApprovalRule/Attribute:level1_timeout' => 'Level 1 approval delay (hours)~~',
-	'Class:ApprovalRule/Attribute:level1_timeout+' => '~~',
-	'Class:ApprovalRule/Attribute:level1_exit_condition' => 'Level 1 approval ending~~',
-	'Class:ApprovalRule/Attribute:level1_exit_condition+' => '~~',
-	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reply' => 'ends on the first reply~~',
+	'Class:ApprovalRule/Attribute:level1_default_approval/Value:yes+' => '~~',
+	'Class:ApprovalRule/Attribute:level1_timeout' => 'Approval delay L1~~',
+	'Class:ApprovalRule/Attribute:level1_timeout+' => 'Expressed in hours~~',
+	'Class:ApprovalRule/Attribute:level1_exit_condition' => 'Approval ending L1~~',
+	'Class:ApprovalRule/Attribute:level1_exit_condition+' => 'Ending criteria for this approval level~~',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reply' => 'on first reply~~',
 	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reply+' => 'The first reply determines the result at Level 1~~',
-	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reject' => 'ends on first "Reject"~~',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reject' => 'on first "Reject"~~',
 	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_reject+' => 'Everyone must approve~~',
-	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve' => 'ends on first "Approve"~~',
+	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve' => 'on first "Approve"~~',
 	'Class:ApprovalRule/Attribute:level1_exit_condition/Value:first_approve+' => 'Only one approval is requested~~',
 	'Class:ApprovalRule/Attribute:level1_substitute_query' => 'Substitute L1~~',
 	'Class:ApprovalRule/Attribute:level1_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
 	'Class:ApprovalRule/Attribute:level1_substitute_timeout' => 'Substitute notification delay L1~~',
 	'Class:ApprovalRule/Attribute:level1_substitute_timeout+' => 'Substitutes will be notified if approver has not answered before this percentage of the approval delay~~',
-	'Class:ApprovalRule/Attribute:level2_rule' => 'Approval Level 2~~',
-	'Class:ApprovalRule/Attribute:level2_rule+' => '~~',
-	'Class:ApprovalRule/Attribute:level2_default_approval' => 'Automatically approved if no answer at Level 2~~',
-	'Class:ApprovalRule/Attribute:level2_default_approval+' => '~~',
+	'Class:ApprovalRule/Attribute:level2_rule' => 'Approvers L2~~',
+	'Class:ApprovalRule/Attribute:level2_rule+' => 'OQL to retrieve the Approvers appropriate for the Ticket, using placeholder like `:this->caller_id`~~',
+	'Class:ApprovalRule/Attribute:level2_default_approval' => 'Approved if no answer L2~~',
+	'Class:ApprovalRule/Attribute:level2_default_approval+' => 'Automatically approved if no answer from neither approvers nor substitutes~~',
 	'Class:ApprovalRule/Attribute:level2_default_approval/Value:no' => 'no~~',
-	'Class:ApprovalRule/Attribute:level2_default_approval/Value:no+' => 'no~~',
+	'Class:ApprovalRule/Attribute:level2_default_approval/Value:no+' => '~~',
 	'Class:ApprovalRule/Attribute:level2_default_approval/Value:yes' => 'yes~~',
-	'Class:ApprovalRule/Attribute:level2_default_approval/Value:yes+' => 'yes~~',
-	'Class:ApprovalRule/Attribute:level2_timeout' => 'Level 2 approval delay (hours)~~',
-	'Class:ApprovalRule/Attribute:level2_timeout+' => '~~',
-	'Class:ApprovalRule/Attribute:level2_exit_condition' => 'Level 2 approval ending~~',
-	'Class:ApprovalRule/Attribute:level2_exit_condition+' => '~~',
-	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reply' => 'ends on the first reply~~',
+	'Class:ApprovalRule/Attribute:level2_default_approval/Value:yes+' => '~~',
+	'Class:ApprovalRule/Attribute:level2_timeout' => 'Approval delay L2~~',
+	'Class:ApprovalRule/Attribute:level2_timeout+' => 'Expressed in hours~~',
+	'Class:ApprovalRule/Attribute:level2_exit_condition' => 'Approval ending L2~~',
+	'Class:ApprovalRule/Attribute:level2_exit_condition+' => 'Ending criteria for this approval level~~',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reply' => 'on first reply~~',
 	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reply+' => 'The first reply determines the result at Level 2~~',
-	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reject' => 'ends on first "Reject"~~',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reject' => 'on first "Reject"~~',
 	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_reject+' => 'Everyone must approve~~',
-	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve' => 'ends on first "Approve"~~',
+	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve' => 'on first "Approve"~~',
 	'Class:ApprovalRule/Attribute:level2_exit_condition/Value:first_approve+' => 'Only one approval is requested~~',
 	'Class:ApprovalRule/Attribute:level2_substitute_query' => 'Substitute L2~~',
 	'Class:ApprovalRule/Attribute:level2_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
@@ -107,7 +108,7 @@ Dict::Add('IT IT', 'Italian', 'Italiano', array(
 // Class: ServiceSubcategory
 //
 
-Dict::Add('IT IT', 'Italian', 'Italiano', array(
+Dict::Add('PL PL', 'Polish', 'Polski', array(
 	'Class:ServiceSubcategory/Attribute:approvalrule_id' => 'Approval rule~~',
 	'Class:ServiceSubcategory/Attribute:approvalrule_id+' => '~~',
 	'Class:ServiceSubcategory/Attribute:approvalrule_name' => 'Approval rule name~~',
@@ -124,7 +125,7 @@ Dict::Add('IT IT', 'Italian', 'Italiano', array(
 // Class: ExtendedApprovalScheme
 //
 
-Dict::Add('IT IT', 'Italian', 'Italiano', array(
+Dict::Add('PL PL', 'Polish', 'Polski', array(
 	'Class:ExtendedApprovalScheme' => 'ExtendedApprovalScheme~~',
 	'Class:ExtendedApprovalScheme+' => '~~',
 ));
@@ -133,7 +134,7 @@ Dict::Add('IT IT', 'Italian', 'Italiano', array(
 // Class: UserRequest
 //
 
-Dict::Add('IT IT', 'Italian', 'Italiano', array(
+Dict::Add('PL PL', 'Polish', 'Polski', array(
 	'Class:UserRequest/Attribute:approver_id' => 'Approver id~~',
 	'Class:UserRequest/Attribute:approver_id+' => '~~',
 	'Class:UserRequest/Attribute:approver_email' => 'Approver email~~',
