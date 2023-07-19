@@ -23,7 +23,7 @@
 Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 	// Dictionary entries go here
 	'Menu:Ongoing approval' => 'Požadavky čekající na schválení',
-	'Menu:Ongoing approval+' => 'Požadavky čekající na schválení~',
+	'Menu:Ongoing approval+' => 'Požadavky čekající na schválení',
 	'Approbation:PublicObjectDetails' => '<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject ticket $object->html(ref)$</p>
 				      <b>Volající</b>: $object->html(caller_id_friendlyname)$<br>
 				      <b>Title</b>: $object->html(title)$<br>
