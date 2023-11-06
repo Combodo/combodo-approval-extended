@@ -35,7 +35,7 @@ Dict::Add('ZH CN', 'Chinese', '简体中文', array(
 				      <div>$object->html(service_details)$</div>',
 	'Approbation:FormBody' => '<p>尊敬的$approver->html(friendlyname)$, 请您抽空批复工单</p>',
 	'Approbation:ApprovalRequested' => '需要您的审批',
-	'Approbation:Introduction' => '<p>尊敬的$approver->html(friendlyname)$, 请您抽空批复工单$object->html(friendlyname)$</p>~~',
+	'Approbation:Introduction' => '<p>尊敬的$approver->html(friendlyname)$, 请您抽空批复工单$object->html(friendlyname)$</p>',
 
 
 ));
@@ -59,7 +59,7 @@ Dict::Add('ZH CN', 'Chinese', '简体中文', array(
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:no+' => '否',
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:yes' => '是',
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:yes+' => '是',
-	'Class:ApprovalRule/Attribute:level1_timeout' => '一级审批时限 (小时)~~',
+	'Class:ApprovalRule/Attribute:level1_timeout' => '一级审批时限 (小时)',
 	'Class:ApprovalRule/Attribute:level1_timeout+' => '~~',
 	'Class:ApprovalRule/Attribute:level1_exit_condition' => '结束一级审批',
 	'Class:ApprovalRule/Attribute:level1_exit_condition+' => '此审批级别的结束条件',
