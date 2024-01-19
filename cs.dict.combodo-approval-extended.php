@@ -2,7 +2,7 @@
 /**
  * Localized data
  *
- * @copyright Copyright (C) 2010-2018 Combodo SARL
+ * @copyright Copyright (C) 2010-2024 Combodo SARL
  * @license	http://opensource.org/licenses/AGPL-3.0
  *
  * This file is part of iTop.
@@ -33,9 +33,9 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 				      $object->html(description)$<br>
 				      <b>Dodatečné informace</b>:<br>
 				      <div>$object->html(service_details)$</div>',
-	'Approbation:FormBody' => '<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject the ticket</p>~~',
-	'Approbation:ApprovalRequested' => 'Your approval is requested~~',
-	'Approbation:Introduction' => '<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject ticket $object->html(friendlyname)$</p>~~',
+	'Approbation:FormBody' => '<p>Vážený(á) $approver->html(friendlyname)$, prosím o schválení/zamítnutí Tiketu</p>',
+	'Approbation:ApprovalRequested' => 'Je požadováno Vaše rozhodnutí',
+	'Approbation:Introduction' => '<p>Vážený(á) $approver->html(friendlyname)$, prosím o schválení nebo zamítnutí tiketu $object->html(friendlyname)$</p>',
 
 
 ));
@@ -49,11 +49,11 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 	'Class:ApprovalRule+' => '~~',
 	'Class:ApprovalRule/Attribute:name' => 'Jméno',
 	'Class:ApprovalRule/Attribute:name+' => '~~',
-	'Class:ApprovalRule/Attribute:description' => 'Popis',
+	'Class:ApprovalRule/Attribute:description' => 'Poznámka',
 	'Class:ApprovalRule/Attribute:description+' => '~~',
-	'Class:ApprovalRule/Attribute:level1_rule' => 'Approval Level 1~~',
+	'Class:ApprovalRule/Attribute:level1_rule' => 'Úroveň schvalování 1',
 	'Class:ApprovalRule/Attribute:level1_rule+' => '~~',
-	'Class:ApprovalRule/Attribute:level1_default_approval' => 'Automatically approved if no answer at Level 1~~',
+	'Class:ApprovalRule/Attribute:level1_default_approval' => 'Automatické schválení, pokud schvalovatel na úrovni 1 neodpoví',
 	'Class:ApprovalRule/Attribute:level1_default_approval+' => '~~',
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:no' => 'ne',
 	'Class:ApprovalRule/Attribute:level1_default_approval/Value:no+' => 'ne',
@@ -73,9 +73,9 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 	'Class:ApprovalRule/Attribute:level1_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
 	'Class:ApprovalRule/Attribute:level1_substitute_timeout' => 'Substitute notification delay L1~~',
 	'Class:ApprovalRule/Attribute:level1_substitute_timeout+' => 'Substitutes will be notified if approver has not answered before this percentage of the approval delay~~',
-	'Class:ApprovalRule/Attribute:level2_rule' => 'Approval Level 2~~',
+	'Class:ApprovalRule/Attribute:level2_rule' => 'Úroveň schvalování 2',
 	'Class:ApprovalRule/Attribute:level2_rule+' => '~~',
-	'Class:ApprovalRule/Attribute:level2_default_approval' => 'Automatically approved if no answer at Level 2~~',
+	'Class:ApprovalRule/Attribute:level2_default_approval' => 'Automatické schválení, pokud schvalovatel na úrovni 2 neodpoví',
 	'Class:ApprovalRule/Attribute:level2_default_approval+' => '~~',
 	'Class:ApprovalRule/Attribute:level2_default_approval/Value:no' => 'ne',
 	'Class:ApprovalRule/Attribute:level2_default_approval/Value:no+' => 'ne',
@@ -95,7 +95,7 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 	'Class:ApprovalRule/Attribute:level2_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
 	'Class:ApprovalRule/Attribute:level2_substitute_timeout' => 'Substitute notification delay L2~~',
 	'Class:ApprovalRule/Attribute:level2_substitute_timeout+' => 'Substitutes will be notified if approver has not answered before this percentage of the approval delay~~',
-	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Podkategorie služeb',
+	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Service subcategory~~',
 	'Class:ApprovalRule/Attribute:servicesubcategory_list+' => '~~',
 	'Class:ApprovalRule/Attribute:coveragewindow_id' => 'Coverage window~~',
 	'Class:ApprovalRule/Attribute:coveragewindow_id+' => '~~',
@@ -113,10 +113,10 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 	'Class:ServiceSubcategory/Attribute:approvalrule_name' => 'Approval rule name~~',
 	'Class:ServiceSubcategory/Attribute:approvalrule_name+' => '~~',
 	'ApprovalRule:baseinfo' => 'General information~~',
-	'ApprovalRule:Level1' => 'Approval Level 1~~',
-	'ApprovalRule:Level2' => 'Approval Level 2~~',
-	'Menu:ApprovalRule' => 'Approval rules~~',
-	'Menu:ApprovalRule+' => 'All approval rules~~',
+	'ApprovalRule:Level1' => 'Schvalování úroveň 1',
+	'ApprovalRule:Level2' => 'Schvalování úroveň 1',
+	'Menu:ApprovalRule' => 'Pravidla schvalování',
+	'Menu:ApprovalRule+' => 'Všechna pravidla schvalování',
 
 ));
 
@@ -134,14 +134,14 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 //
 
 Dict::Add('CS CZ', 'Czech', 'Čeština', array(
-	'Class:UserRequest/Attribute:approver_id' => 'Approver id~~',
+	'Class:UserRequest/Attribute:approver_id' => 'Id schvalovatele',
 	'Class:UserRequest/Attribute:approver_id+' => '~~',
-	'Class:UserRequest/Attribute:approver_email' => 'Approver email~~',
+	'Class:UserRequest/Attribute:approver_email' => 'Email schvalovatele',
 	'Class:UserRequest/Attribute:approver_email+' => '~~',
-	'Class:UserRequest/Stimulus:ev_approve' => 'Schválit',
+	'Class:UserRequest/Stimulus:ev_approve' => 'Schváleno',
 	'Class:UserRequest/Stimulus:ev_approve+' => '~~',
-	'Class:UserRequest/Stimulus:ev_reject' => 'Zamítnout',
+	'Class:UserRequest/Stimulus:ev_reject' => 'Zamítnuto',
 	'Class:UserRequest/Stimulus:ev_reject+' => '~~',
-	'Class:UserRequest/Stimulus:ev_wait_for_approval' => 'Wait for approval~~',
+	'Class:UserRequest/Stimulus:ev_wait_for_approval' => 'Čeká na schválení',
 	'Class:UserRequest/Stimulus:ev_wait_for_approval+' => '~~',
 ));
