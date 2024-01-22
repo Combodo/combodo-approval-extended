@@ -95,7 +95,7 @@ Dict::Add('CS CZ', 'Czech', 'Čeština', array(
 	'Class:ApprovalRule/Attribute:level2_substitute_query+' => 'Substitutes are approver dependent : use `:approver->...` placeholder in the query to retrieve the corresponding substitutes~~',
 	'Class:ApprovalRule/Attribute:level2_substitute_timeout' => 'Substitute notification delay L2~~',
 	'Class:ApprovalRule/Attribute:level2_substitute_timeout+' => 'Substitutes will be notified if approver has not answered before this percentage of the approval delay~~',
-	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Service subcategory~~',
+	'Class:ApprovalRule/Attribute:servicesubcategory_list' => 'Podkategorie služeb',
 	'Class:ApprovalRule/Attribute:servicesubcategory_list+' => '~~',
 	'Class:ApprovalRule/Attribute:coveragewindow_id' => 'Coverage window~~',
 	'Class:ApprovalRule/Attribute:coveragewindow_id+' => '~~',
