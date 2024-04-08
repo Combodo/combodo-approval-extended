@@ -35,9 +35,7 @@
           </state>
         </states>
       </lifecycle>
-      <methods>
-        <method id="SetApprover" _delta="delete"/>
-      </methods>
+      <methods/>
       <presentation>
         <details>
           <items>
