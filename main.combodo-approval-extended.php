@@ -51,14 +51,19 @@ class HideButtonsPlugin implements iApplicationUIExtension
 {
 	public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
 	{
-		if ( (get_class($oObject) == 'UserRequest' ) && ( $oObject->IsNew()) )
+		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ['UserRequest'=>['bypass_profiles'=>' Administrator, Service Manager']]);
+		if (array_key_exists(get_class($oObject), $aAllowedClasses) && MetaModel::HasLifecycle(get_class($oObject)))
 		{
-			$oSet = new DBObjectSet(new DBObjectSearch('ApprovalRule'));
-			$iCount = $oSet->Count();
-			if ($iCount > 0)
-			{
+			$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE ar.target_class = :target_class AND ar.target_class_state = :target_state';
+			$sStateAttCode = MetaModel::GetStateAttributeCode(get_class($oObject));
+			$sTargetState = $oObject->Get($sStateAttCode);
+			$oApprovalRuleSet = new DBObjectSet(
+				DBObjectSearch::FromOQL($sOQL),
+				array(),
+				['target_class' => get_class($oObject), 'target_state' => $sTargetState]);
+			if ($oApprovalRuleSet->Count() > 0) {
 				$oPage->add_ready_script(
-<<<EOF
+					<<<EOF
 $('button.action[name="next_action"]').hide();
 EOF
 				);
