@@ -87,6 +87,18 @@
           <default_value/>
           <is_null_allowed>true</is_null_allowed>
         </field>
+        <field id="target_class" xsi:type="AttributeClass">
+          <class_category>bizmodel</class_category>
+          <sql>target_class</sql>
+          <default_value>UserRequest</default_value>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+        <field id="target_class_state" xsi:type="AttributeString">
+          <sql>target_class_state</sql>
+          <class_field>target_class</class_field>
+          <default_value/>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
         <field id="level1_rule" xsi:type="AttributeOQL">
           <sql>level1_rule</sql>
           <default_value/>
@@ -200,15 +212,21 @@
                 <item id="fieldset:ApprovalRule:baseinfo">
                   <rank>10</rank>
                  <items>
-		    <item id="name">
-		      <rank>10</rank>
-		    </item>
-		    <item id="description">
-		      <rank>20</rank>
-		    </item>
-		    <item id="coveragewindow_id">
-		      <rank>30</rank>
-		    </item>
+                  <item id="name">
+                    <rank>10</rank>
+                  </item>
+                  <item id="description">
+                    <rank>20</rank>
+                  </item>
+                   <item id="target_class">
+                     <rank>30</rank>
+                   </item>
+                   <item id="target_class_state">
+                     <rank>40</rank>
+                   </item>
+                  <item id="coveragewindow_id">
+                    <rank>50</rank>
+                  </item>
                  </items>
                 </item>
               </items>
@@ -279,9 +297,15 @@
             <item id="description">
               <rank>20</rank>
             </item>
-	    <item id="coveragewindow_id">
-	      <rank>30</rank>
-	    </item>
+            <item id="target_class">
+              <rank>30</rank>
+            </item>
+            <item id="target_class_state">
+              <rank>40</rank>
+            </item>
+            <item id="coveragewindow_id">
+              <rank>50</rank>
+            </item>
           </items>
         </search>
         <list>
@@ -342,7 +366,14 @@
           </attributes>
         </reconciliation>
       </properties>
-      <fields/>
+      <fields>
+        <field id="target_class_state" xsi:type="AttributeString">
+          <sql>target_class_state</sql>
+          <class_field>obj_class</class_field>
+          <default_value/>
+          <is_null_allowed>false</is_null_allowed>
+        </field>
+      </fields>
       <methods>
         <method id="GetApprovalScheme">
           <static>true</static>
@@ -355,22 +386,28 @@
 			'first_reject' => ApprovalScheme::EXIT_ON_FIRST_REJECT,
 			'first_approve' => ApprovalScheme::EXIT_ON_FIRST_APPROVE,
 		);
-		if ((get_class($oObject) != 'UserRequest'))
-		{
-			return null;
-		}
-		$sTargetState = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_state', 'new');
-		if ($sReachingState != $sTargetState)
+
+		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ['UserRequest'=>['target_state'=>'new']]);
+IssueLog::Error('aAllowedClasses'.json_encode($aAllowedClasses));
+if (array_key_exists(get_class($oObject), $aAllowedClasses) === false)
 		{
 			return null;
 		}
 
-		$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id = :servicesubcategory';
+		$sTargetState = $aAllowedClasses[get_class($oObject)][ 'target_state'];
+IssueLog::Error('aAllowedClasses $sTargetState'.json_encode($sTargetState));
+		if (in_array($sReachingState, explode(',', $sTargetState)) === false)
+		{
+			return null;
+		}
+
+		$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id = :servicesubcategory AND ar.target_class = :target_class AND ar.target_class_state = :target_class_state';
 		$oApprovalRuleSet = new DBObjectSet(
 			DBObjectSearch::FromOQL($sOQL),
 			array(),
-			array('servicesubcategory' => $oObject->Get('servicesubcategory_id'))
-		);
+			['servicesubcategory' => $oObject->Get('servicesubcategory_id'), 'target_class' => get_class($oObject), 'target_class_state' => $sReachingState]);
+    IssueLog::Error('ApprovalRule: '.$oApprovalRuleSet->GetFilter()->ToOQL(true));
+    IssueLog::Error('ApprovalRuleSet count: '.$oApprovalRuleSet->count());
 		if ($oApprovalRuleSet->count() == 0)
 		{
 			// No approval rule applies to the current object
@@ -381,6 +418,8 @@
 
 		$oApprovalRule = $oApprovalRuleSet->fetch();
 		$oScheme = new ExtendedApprovalScheme();
+    $oScheme->Set('target_class_state', $sReachingState);
+    $oScheme->Set('started_state', $sReachingState);
 
     $bStepAdded = false;
 
@@ -551,7 +590,9 @@
 			return false;
 		}
 
-		$sAllowedProfiles = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'bypass_profiles', 'Administrator, Service Manager');
+	  $aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ['UserRequest'=>['bypass_profiles'=>' Administrator, Service Manager']]);
+
+		$sAllowedProfiles = $aAllowedClasses[$this->Get('obj_class')]['bypass_profiles'];
 		$aAllowed = array();
 		foreach (explode(',', $sAllowedProfiles) as $sProfileRaw)
 		{
