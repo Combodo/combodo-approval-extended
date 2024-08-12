@@ -413,8 +413,8 @@
 
 		$oApprovalRule = $oApprovalRuleSet->fetch();
 		$oScheme = new ExtendedApprovalScheme();
-    $oScheme->Set('target_class_state', $sReachingState);
-    $oScheme->Set('started_state', $sReachingState);
+		$oScheme->Set('target_class_state', $sReachingState);
+		$oScheme->Set('started_state', $sReachingState);
 
     $bStepAdded = false;
 
