@@ -23,7 +23,16 @@
  * @author      Denis Flaven <denis.flaven@combodo.com>
  * @license     http://www.opensource.org/licenses/gpl-3.0.html LGPL
  */
-
+class ApprovalConfiguration
+{
+	const DEFAULT_TARGET = [
+		'UserRequest' =>   [
+		    'target_states' => ['new'],
+		    'bypass_profiles' => 'Service Manager',
+		    'reuse_previous_answers' => true,
+		  ]
+	];
+}
 class ApprovalComputeWorkingHours implements iWorkingTimeComputer
 {
 	public static function GetDescription()
@@ -51,22 +60,22 @@ class HideButtonsPlugin implements iApplicationUIExtension
 {
 	public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
 	{
-		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ['UserRequest'=>['bypass_profiles'=>' Administrator, Service Manager']]);
+		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets',ApprovalConfiguration::DEFAULT_TARGET);
 		if (array_key_exists(get_class($oObject), $aAllowedClasses) && MetaModel::HasLifecycle(get_class($oObject)))
 		{
-			$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE ar.target_class = :target_class AND ar.target_class_state = :target_state';
 			$sStateAttCode = MetaModel::GetStateAttributeCode(get_class($oObject));
 			$sTargetState = $oObject->Get($sStateAttCode);
-			$oApprovalRuleSet = new DBObjectSet(
-				DBObjectSearch::FromOQL($sOQL),
-				array(),
-				['target_class' => get_class($oObject), 'target_state' => $sTargetState]);
-			if ($oApprovalRuleSet->Count() > 0) {
-				$oPage->add_ready_script(
-					<<<EOF
-$('button.action[name="next_action"]').hide();
+
+			if (in_array($sTargetState, $aAllowedClasses[get_class($oObject)][ 'target_states']) )		{
+				$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE ar.target_class = :target_class AND ar.target_class_state = :target_state';
+				$oApprovalRuleSet = new DBObjectSet( DBObjectSearch::FromOQL($sOQL),	[],	['target_class' => get_class($oObject), 'target_state' => $sTargetState]);
+				if ($oApprovalRuleSet->Count() > 0) {
+					$oPage->add_ready_script(
+						<<<EOF
+	$('button.action[name="next_action"]').hide();
 EOF
-				);
+					);
+			}
 			}
 		}
 	}

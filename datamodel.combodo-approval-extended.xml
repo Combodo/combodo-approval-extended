@@ -387,17 +387,13 @@
 			'first_approve' => ApprovalScheme::EXIT_ON_FIRST_APPROVE,
 		);
 
-		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ['UserRequest'=>['target_state'=>'new']]);
-IssueLog::Error('aAllowedClasses'.json_encode($aAllowedClasses));
-if (array_key_exists(get_class($oObject), $aAllowedClasses) === false)
-		{
+		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ApprovalConfiguration::DEFAULT_TARGET);
+    if (array_key_exists(get_class($oObject), $aAllowedClasses) === false)		{
 			return null;
 		}
 
-		$sTargetState = $aAllowedClasses[get_class($oObject)][ 'target_state'];
-IssueLog::Error('aAllowedClasses $sTargetState'.json_encode($sTargetState));
-		if (in_array($sReachingState, explode(',', $sTargetState)) === false)
-		{
+		$aTargetState = $aAllowedClasses[get_class($oObject)][ 'target_states'];
+		if (in_array($sReachingState, $aTargetState) === false)		{
 			return null;
 		}
 
@@ -406,15 +402,14 @@ IssueLog::Error('aAllowedClasses $sTargetState'.json_encode($sTargetState));
 			DBObjectSearch::FromOQL($sOQL),
 			array(),
 			['servicesubcategory' => $oObject->Get('servicesubcategory_id'), 'target_class' => get_class($oObject), 'target_class_state' => $sReachingState]);
-    IssueLog::Error('ApprovalRule: '.$oApprovalRuleSet->GetFilter()->ToOQL(true));
-    IssueLog::Error('ApprovalRuleSet count: '.$oApprovalRuleSet->count());
+
 		if ($oApprovalRuleSet->count() == 0)
 		{
 			// No approval rule applies to the current object
 			return null;
 		}
 
-		$bReusePreviousAnswers = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'reuse_previous_answers', true);
+		$bReusePreviousAnswers = $aAllowedClasses[get_class($oObject)][ 'reuse_previous_answers'];
 
 		$oApprovalRule = $oApprovalRuleSet->fetch();
 		$oScheme = new ExtendedApprovalScheme();
@@ -590,7 +585,7 @@ IssueLog::Error('aAllowedClasses $sTargetState'.json_encode($sTargetState));
 			return false;
 		}
 
-	  $aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ['UserRequest'=>['bypass_profiles'=>' Administrator, Service Manager']]);
+	  $aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ApprovalConfiguration::DEFAULT_TARGET);
 
 		$sAllowedProfiles = $aAllowedClasses[$this->Get('obj_class')]['bypass_profiles'];
 		$aAllowed = array();
