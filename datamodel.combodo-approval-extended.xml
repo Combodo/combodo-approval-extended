@@ -95,7 +95,6 @@
         </field>
         <field id="target_class_state" xsi:type="AttributeString">
           <sql>target_class_state</sql>
-          <class_field>target_class</class_field>
           <default_value/>
           <is_null_allowed>false</is_null_allowed>
         </field>
