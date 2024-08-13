@@ -56,12 +56,17 @@ SetupWebPage::AddModule(
 		'doc.manual_setup' => '', // hyperlink to manual setup documentation, if any
 		'doc.more_information' => '', // hyperlink to more information, if any
 
-		'settings' => array(
-			// Module specific settings go here, if any
-			'target_state' => 'new',
-			'bypass_profiles' => 'Administrator, Service Manager',
-			'reuse_previous_answers' => true
-		),
+		'settings' =>
+			[
+				'targets' => [
+					'UserRequest' =>
+						[
+							'target_states' => 'new,assigned',
+							'bypass_profiles' => 'Service Manager',
+							'reuse_previous_answers' => true,
+						],
+				],
+			],
 	)
 );
 
