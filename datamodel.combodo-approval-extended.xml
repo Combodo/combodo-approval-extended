@@ -90,7 +90,7 @@
         <field id="target_class" xsi:type="AttributeClass">
           <class_category>bizmodel</class_category>
           <sql>target_class</sql>
-          <default_value>UserRequest</default_value>
+          <default_value/>
           <is_null_allowed>false</is_null_allowed>
         </field>
         <field id="target_class_state" xsi:type="AttributeString">
