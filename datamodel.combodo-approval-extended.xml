@@ -391,7 +391,7 @@
 			return null;
 		}
 
-		$aTargetState = $aAllowedClasses[get_class($oObject)][ 'target_states'];
+		$aTargetState = $aAllowedClasses[get_class($oObject)]['target_states'];
 		if (in_array($sReachingState, $aTargetState) === false)		{
 			return null;
 		}

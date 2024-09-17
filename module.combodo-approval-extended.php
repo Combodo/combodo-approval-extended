@@ -16,7 +16,7 @@
 
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
-	'combodo-approval-extended/1.4.2',
+	'combodo-approval-extended/1.5.0-dev',
 	array(
 		// Identification
 		//
@@ -61,7 +61,7 @@ SetupWebPage::AddModule(
 				'targets' => [
 					'UserRequest' =>
 						[
-							'target_states' => 'new,assigned',
+							'target_states' => ['new'],
 							'bypass_profiles' => 'Service Manager',
 							'reuse_previous_answers' => true,
 						],
@@ -78,7 +78,28 @@ if (!class_exists('ApprovalExtendedInstaller'))
 	{
 		public static function BeforeWritingConfig(Config $oConfiguration)
 		{
-			// If you want to override/force some configuration values, do it here
+			if (empty(utils::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', null))
+					&& !empty(utils::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_state', null) )) {
+				// Migration of the old configuration to the new one
+				$newConfiguration = [
+													'UserRequest' =>   [
+														'target_states' => [$oConfiguration->GetModuleSetting('combodo-approval-extended', 'target_state', null) ],
+														'bypass_profiles' =>$oConfiguration->GetModuleSetting('combodo-approval-extended', 'bypass_profiles', 'Service Manager') ,
+														'reuse_previous_answers' => $oConfiguration->GetModuleSetting('combodo-approval-extended', 'reuse_previous_answers', true) ,
+													]
+												];
+				$oConfiguration->SetModuleSetting('combodo-approval-extended', 'targets', $newConfiguration);
+			}
+			// Replacing old conf parameters value to indicate that it is obsolete
+			$aParamsToRemove = array('target_state', 'bypass_profiles', 'reuse_previous_answers');
+			foreach($aParamsToRemove as $sParamToRemove)
+			{
+				$sParamCurrentValue = $oConfiguration->GetModuleSetting('combodo-approval-extended', $sParamToRemove, null);
+				if(!empty($sParamCurrentValue))
+				{
+					$oConfiguration->SetModuleSetting('combodo-approval-extended', $sParamToRemove, 'No longer used, you can remove this parameter.');
+				}
+			}
 			return $oConfiguration;
 		}
 

@@ -71,9 +71,9 @@ class HideButtonsPlugin implements iApplicationUIExtension
 				$oApprovalRuleSet = new DBObjectSet( DBObjectSearch::FromOQL($sOQL),	[],	['target_class' => get_class($oObject), 'target_state' => $sTargetState]);
 				if ($oApprovalRuleSet->Count() > 0) {
 					$oPage->add_ready_script(
-						<<<EOF
+<<<JS
 	$('button.action[name="next_action"]').hide();
-EOF
+JS
 					);
 			}
 			}
