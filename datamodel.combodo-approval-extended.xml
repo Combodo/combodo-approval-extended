@@ -387,7 +387,7 @@
 		);
 
 		$aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ApprovalConfiguration::DEFAULT_TARGET);
-    if (array_key_exists(get_class($oObject), $aAllowedClasses) === false)		{
+        if (array_key_exists(get_class($oObject), $aAllowedClasses) === false)		{
 			return null;
 		}
 
@@ -399,7 +399,7 @@
 		$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id = :servicesubcategory AND ar.target_class = :target_class AND ar.target_class_state = :target_class_state';
 		$oApprovalRuleSet = new DBObjectSet(
 			DBObjectSearch::FromOQL($sOQL),
-			array(),
+			[],
 			['servicesubcategory' => $oObject->Get('servicesubcategory_id'), 'target_class' => get_class($oObject), 'target_class_state' => $sReachingState]);
 
 		if ($oApprovalRuleSet->count() == 0)
@@ -584,7 +584,7 @@
 			return false;
 		}
 
-	  $aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ApprovalConfiguration::DEFAULT_TARGET);
+	    $aAllowedClasses = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', ApprovalConfiguration::DEFAULT_TARGET);
 
 		$sAllowedProfiles = $aAllowedClasses[$this->Get('obj_class')]['bypass_profiles'];
 		$aAllowed = array();

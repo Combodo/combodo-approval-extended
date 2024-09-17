@@ -79,11 +79,11 @@ if (!class_exists('ApprovalExtendedInstaller'))
 		public static function BeforeWritingConfig(Config $oConfiguration)
 		{
 			if (empty(utils::GetConfig()->GetModuleSetting('combodo-approval-extended', 'targets', null))
-					&& !empty(utils::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_state', null) )) {
+					&& !empty(utils::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_states', null) )) {
 				// Migration of the old configuration to the new one
 				$newConfiguration = [
 													'UserRequest' =>   [
-														'target_states' => [$oConfiguration->GetModuleSetting('combodo-approval-extended', 'target_state', null) ],
+														'target_states' => [$oConfiguration->GetModuleSetting('combodo-approval-extended', 'target_states', null) ],
 														'bypass_profiles' =>$oConfiguration->GetModuleSetting('combodo-approval-extended', 'bypass_profiles', 'Service Manager') ,
 														'reuse_previous_answers' => $oConfiguration->GetModuleSetting('combodo-approval-extended', 'reuse_previous_answers', true) ,
 													]
@@ -91,7 +91,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 				$oConfiguration->SetModuleSetting('combodo-approval-extended', 'targets', $newConfiguration);
 			}
 			// Replacing old conf parameters value to indicate that it is obsolete
-			$aParamsToRemove = array('target_state', 'bypass_profiles', 'reuse_previous_answers');
+			$aParamsToRemove = array('target_states', 'bypass_profiles', 'reuse_previous_answers');
 			foreach($aParamsToRemove as $sParamToRemove)
 			{
 				$sParamCurrentValue = $oConfiguration->GetModuleSetting('combodo-approval-extended', $sParamToRemove, null);
