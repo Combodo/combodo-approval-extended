@@ -75,7 +75,7 @@ class HideButtonsPlugin implements iApplicationUIExtension
 	$('button.action[name="next_action"]').hide();
 JS
 					);
-			}
+				}
 			}
 		}
 	}
