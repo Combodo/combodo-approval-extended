@@ -68,7 +68,7 @@ class HideButtonsPlugin implements iApplicationUIExtension
 
 			if (in_array($sTargetState, $aAllowedClasses[get_class($oObject)][ 'target_states']) )		{
 				$sOQL = 'SELECT ApprovalRule AS ar JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE ar.target_class = :target_class AND ar.target_class_state = :target_state';
-				$oApprovalRuleSet = new DBObjectSet( DBObjectSearch::FromOQL($sOQL),	[],	['target_class' => get_class($oObject), 'target_states' => $sTargetState]);
+				$oApprovalRuleSet = new DBObjectSet( DBObjectSearch::FromOQL($sOQL),	[],	['target_class' => get_class($oObject), 'target_state' => $sTargetState]);
 				if ($oApprovalRuleSet->Count() > 0) {
 					$oPage->add_ready_script(
 <<<JS
