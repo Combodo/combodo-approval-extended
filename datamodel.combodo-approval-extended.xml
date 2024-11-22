@@ -35,7 +35,38 @@
           </state>
         </states>
       </lifecycle>
-      <methods/>
+      <event_listeners>
+        <event_listener id="HideTransitionsIfApprovalRule" _delta="define">
+          <event>EVENT_ENUM_TRANSITIONS</event>
+          <rank>10</rank>
+          <callback>HideTransitionsIfApprovalRule</callback>
+        </event_listener>
+      </event_listeners>
+      <methods>
+        <method id="HideTransitionsIfApprovalRule" _delta="define">
+          <comment>/**
+            * If an approval rule could apply to the current object, hide all transitions
+            * As the service and service subcategory are not yet set, we can't determine if the approval rule will really apply
+            * So we hide all transitions if the object is new and in a state where an approval rule could apply
+            */</comment>
+          <static>false</static>
+          <access>public </access>
+          <code><![CDATA[public function HideTransitionsIfApprovalRule(Combodo\iTop\Service\Events\EventData $oEventData)
+	{
+        $sTargetState = MetaModel::GetConfig()->GetModuleSetting('combodo-approval-extended', 'target_state', 'new');
+        if (($this->Get('status') === $sTargetState) && $this->IsNew()) {
+            $oSet = new DBObjectSet(new DBObjectSearch('ApprovalRule'));
+            $iNbRules = $oSet->Count();
+            if ($iNbRules > 0) {
+                IssueLog::Debug("UserRequest::HideTransitionsIfApprovalRule - There are: ".$iNbRules." rules for UserRequest created in state: ".$sTargetState.", so all transitions are hidden", 'combodo-approval-extended');
+                foreach ($oEventData->Get('allowed_stimuli') as $sTransition) {
+                    $this->DenyTransition($sTransition);
+                }
+            }
+        }
+	}]]></code>
+        </method>
+      </methods>
       <presentation>
         <details>
           <items>

@@ -47,67 +47,6 @@ class ApprovalComputeWorkingHours implements iWorkingTimeComputer
 }
 
 
-class HideButtonsPlugin implements iApplicationUIExtension
-{
-	public function OnDisplayProperties($oObject, WebPage $oPage, $bEditMode = false)
-	{
-		if ( (get_class($oObject) == 'UserRequest' ) && ( $oObject->IsNew()) )
-		{
-			$oSet = new DBObjectSet(new DBObjectSearch('ApprovalRule'));
-			$iCount = $oSet->Count();
-			if ($iCount > 0)
-			{
-				$oPage->add_ready_script(
-<<<EOF
-$('button.action[name="next_action"]').hide();
-EOF
-				);
-			}
-		}
-	}
-
-
-	public function OnDisplayRelations($oObject, WebPage $oPage, $bEditMode = false)
-	{
-
-	}
-
-	public function OnFormSubmit($oObject, $sFormPrefix = '')
-	{
-
-	}
-
-	public function OnFormCancel($sTempId)
-	{
-
-	}
-
-	public function EnumUsedAttributes($oObject)
-	{
-		return array();
-	}
-
-
-	public function GetIcon($oObject)
-	{
-		return '';
-	}
-
-	public function GetHilightClass($oObject)
-	{
-		// Possible return values are:
-		// HILIGHT_CLASS_CRITICAL, HILIGHT_CLASS_WARNING, HILIGHT_CLASS_OK, HILIGHT_CLASS_NONE
-		return HILIGHT_CLASS_NONE;
-	}
-
-	public function EnumAllowedActions(DBObjectSet $oSet)
-
-	{
-		// No action
-		return array();
-	}
-}
-
 class ApprovalFromUI implements iPopupMenuExtension
 {
 	/**
