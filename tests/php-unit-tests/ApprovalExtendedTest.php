@@ -19,9 +19,9 @@ class ApprovalExtendedTest extends ItopDataTestCase
 {
     private Ticket $oTicket;
     private string $iHelpdesk;
-    private int $iAgatha;
-    private int $iDavid;
-    private int $iClaude;
+    private int $iManager;
+    private int $iAgent;
+    private int $iCaller;
     private int $iCustomer;
     private int $iProvider;
     private int $iService;
@@ -36,6 +36,7 @@ class ApprovalExtendedTest extends ItopDataTestCase
 	{
 		parent::setUp();
         $this->DeleteAllObjects(\ApprovalRule::class);
+
 		$this->iProvider = $this->GivenObjectInDB(\Organization::class, ['name' => 'Provider']);
 		$this->iCustomer = $this->GivenObjectInDB(\Organization::class, ['name' => 'Client']);
         $iCoverage = $this->GivenFullCoverage();
@@ -48,18 +49,16 @@ class ApprovalExtendedTest extends ItopDataTestCase
             'approvalrule_id' => $iRule,
         ]);
         $this->GivenCustomerContract('Contrat Client', $this->iCustomer, $this->iProvider, [$this->iService]);
-        $this->iAgatha = $this->GivenObjectInDB(\Person::class, ['first_name' => 'Agatha', 'name' => 'Christie', 'org_id' => $this->iProvider]);
-        $this->iClaude = $this->GivenObjectInDB(\Person::class, ['first_name' => 'Claude', 'name' => 'Monet', 'org_id' => $this->iCustomer, 'manager_id' => $this->iAgatha]);
-		$this->iDavid = $this->GivenObjectInDB(\Person::class, ['first_name' => 'David', 'name' => 'Lynch', 'org_id' => $this->iProvider]);
-        $this->iHelpdesk = $this->GivenObjectInDB(\Team::class, ['name' => 'Helpdesk', 'org_id' => $this->iProvider]);
-        $this->GivenObjectInDB(\lnkPersonToTeam::class, ['person_id' => $this->iDavid, 'team_id' => $this->iHelpdesk]);
+        $this->iManager = $this->GivenObjectInDB(\Person::class, ['first_name' => 'Agatha', 'name' => 'Christie', 'org_id' => $this->iProvider]);
+        $this->iCaller = $this->GivenObjectInDB(\Person::class, ['first_name' => 'Claude', 'name' => 'Monet', 'org_id' => $this->iCustomer, 'manager_id' => $this->iManager]);
+		$this->iAgent = $this->GivenObjectInDB(\Person::class, ['first_name' => 'David', 'name' => 'Lynch', 'org_id' => $this->iProvider]);
+        $this->iHelpdesk = $this->GivenObjectInDB(\Team::class, ['name' => 'Helpdesk', 'org_id' => $this->iProvider, 'persons_list' => ["person_id:$this->iAgent"]]);
 	}
 
 
     public function testURInScopeOfSimpleApprovalRule()
     {
         $this->oTicket = $this->CreateSimpleUserRequest();
-        $this->oTicket->Reload();
         $this->assertEquals('waiting_for_approval', $this->oTicket->Get('status'),"The ticket should be pending approval");
     }
 
@@ -70,7 +69,7 @@ class ApprovalExtendedTest extends ItopDataTestCase
         return $this->createObject('UserRequest',
             ['title' => 'Test ticket',
                 'org_id' => $this->iCustomer, // Demo client
-                'caller_id' => $this->iClaude, // Claude Monet
+                'caller_id' => $this->iCaller, // Claude Monet
                 'service_id' => $this->iService, // Computers and peripherals
                 'servicesubcategory_id' => $this->iSubCategory, //New desktop ordering
                 'request_type' => 'service_request',
