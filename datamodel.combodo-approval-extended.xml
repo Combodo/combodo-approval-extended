@@ -665,7 +665,16 @@
       </presentation>
     </class>
   </classes>
-   <menus>
+  <meta>
+    <classes>
+      <class id="ApprovalComputeWorkingHours" _delta="define">
+        <interfaces>
+          <interface id="iMetricComputer"/>
+        </interfaces>
+      </class>
+    </classes>
+  </meta>
+  <menus>
     <menu id="ApprovalRule" xsi:type="OQLMenuNode" _delta="define">
       <rank>15</rank>
       <parent>ServiceManagement</parent>
