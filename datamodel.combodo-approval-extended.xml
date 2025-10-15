@@ -669,7 +669,7 @@
     <classes>
       <class id="ApprovalComputeWorkingHours" _delta="define">
         <interfaces>
-          <interface id="iMetricComputer"/>
+          <interface id="iWorkingTimeComputer"/>
         </interfaces>
       </class>
     </classes>
