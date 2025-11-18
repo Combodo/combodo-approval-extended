@@ -23,29 +23,42 @@
  * @author      Denis Flaven <denis.flaven@combodo.com>
  * @license     http://www.opensource.org/licenses/gpl-3.0.html LGPL
  */
-
-class ApprovalComputeWorkingHours implements iWorkingTimeComputer
-{
-	public static function GetDescription()
+if (version_compare(ITOP_DESIGN_LATEST_VERSION, 3.3, '>=')) {
+	class ApprovalComputeWorkingHours extends CoverageBasedWorkingTimeComputer
 	{
-		return "Compute working hours for Approval rule on UserRequest";
+		public static function GetDescription()
+		{
+			return "Compute working hours for Approval rule on UserRequest";
+		}
+
+		protected function GetCoverageOql($oTicket)
+		{
+			return 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
+		}
 	}
-
-	public function GetDeadline($oObject, $iDuration, DateTime $oStartDate)
+} else {
+	class ApprovalComputeWorkingHours implements iWorkingTimeComputer
 	{
-		$sCoverageOQL = 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
+		public static function GetDescription()
+		{
+			return "Compute working hours for Approval rule on UserRequest";
+		}
 
-		return EnhancedSLAComputation::GetDeadline($oObject, $iDuration, $oStartDate, $sCoverageOQL);
-	}
-	
-	public function GetOpenDuration($oObject, DateTime $oStartDate, DateTime $oEndDate)
-	{
-		$sCoverageOQL = 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
+		public function GetDeadline($oObject, $iDuration, DateTime $oStartDate)
+		{
+			$sCoverageOQL = 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
 
-		return EnhancedSLAComputation::GetOpenDuration($oObject, $oStartDate, $oEndDate, $sCoverageOQL);
+			return EnhancedSLAComputation::GetDeadline($oObject, $iDuration, $oStartDate, $sCoverageOQL);
+		}
+
+		public function GetOpenDuration($oObject, DateTime $oStartDate, DateTime $oEndDate)
+		{
+			$sCoverageOQL = 'SELECT CoverageWindow AS cw JOIN ApprovalRule AS ar ON ar.coveragewindow_id=cw.id JOIN ServiceSubcategory AS sc ON sc.approvalrule_id = ar.id WHERE sc.id =:this->servicesubcategory_id';
+
+			return EnhancedSLAComputation::GetOpenDuration($oObject, $oStartDate, $oEndDate, $sCoverageOQL);
+		}
 	}
 }
-
 
 class ApprovalFromUI implements iPopupMenuExtension
 {
