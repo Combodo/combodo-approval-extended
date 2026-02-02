@@ -59,7 +59,7 @@ SetupWebPage::AddModule(
 		'settings' => array(
 			// Module specific settings go here, if any
 			'target_state' => 'new',
-			'bypass_profiles' => 'Administrator, Service Manager',
+			'bypass_profiles' => 'Administrator, SuperUser, Service Manager',
 			'reuse_previous_answers' => true
 		),
 	)
