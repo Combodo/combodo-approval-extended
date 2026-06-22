@@ -1,4 +1,5 @@
 <?php
+
 // Copyright (C) 2012 Combodo SARL
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -17,7 +18,7 @@
 SetupWebPage::AddModule(
 	__FILE__, // Path to the current file, all other file names are relative to the directory containing this file
 	'combodo-approval-extended/1.5.3',
-	array(
+	[
 		// Identification
 		//
 		'label'        => 'Enhanced Approval Schemes',
@@ -25,48 +26,48 @@ SetupWebPage::AddModule(
 
 		// Setup
 		//
-		'dependencies' => array(
+		'dependencies' => [
 			'approval-base/2.5.1',
 			'itop-service-mgmt/3.2.0||itop-service-mgmt-provider/3.2.0',
 			'itop-request-mgmt-itil/3.2.0||itop-request-mgmt/3.2.0',
 			'combodo-sla-computation/2.3.0',
-		),
+		],
 		'mandatory'    => false,
 		'visible' => true,
 		'installer' => 'ApprovalExtendedInstaller',
 
 		// Components
 		//
-		'datamodel' => array(
+		'datamodel' => [
 			'model.combodo-approval-extended.php',
 			'main.combodo-approval-extended.php',
-		),
-		'webservice' => array(
+		],
+		'webservice' => [
 
-		),
-		'data.struct' => array(
+		],
+		'data.struct' => [
 			// add your 'structure' definition XML files here,
-		),
-		'data.sample' => array(
-			// add your sample data XML files here,
-		),
+		],
+		'data.sample' => [
+			'data/data.sample.approvalrule.en_us.xml',
+			'data/data.sample.serviceelements.en_us.xml',
+		],
 
 		// Documentation
 		//
 		'doc.manual_setup' => '', // hyperlink to manual setup documentation, if any
 		'doc.more_information' => '', // hyperlink to more information, if any
 
-		'settings' => array(
+		'settings' => [
 			// Module specific settings go here, if any
 			'target_state' => 'new',
 			'bypass_profiles' => 'Administrator, SuperUser, Service Manager',
-			'reuse_previous_answers' => true
-		),
-	)
+			'reuse_previous_answers' => true,
+		],
+	]
 );
 
-if (!class_exists('ApprovalExtendedInstaller'))
-{
+if (!class_exists('ApprovalExtendedInstaller')) {
 	// Module installation handler
 	//
 	class ApprovalExtendedInstaller extends ModuleInstallerAPI
@@ -95,8 +96,7 @@ if (!class_exists('ApprovalExtendedInstaller'))
 		 */
 		public static function AfterDatabaseCreation(Config $oConfiguration, $sPreviousVersion, $sCurrentVersion)
 		{
-			if (version_compare($sPreviousVersion, '1.2.0', '<'))
-			{
+			if (version_compare($sPreviousVersion, '1.2.0', '<')) {
 				SetupLog::Info("Upgrading combodo-approval-extended from '$sPreviousVersion' to '$sCurrentVersion'. Starting with 1.2.0, the extension requires a set of trigger/actions that will created into the DB...");
 
 				$oTrigger = MetaModel::NewObject('TriggerOnApprovalRequest');
@@ -111,7 +111,9 @@ if (!class_exists('ApprovalExtendedInstaller'))
 				$oAction->Set('from', ActionEmailApprovalRequest::GetDefaultEmailSender());
 				$oAction->Set('subject', 'Your approval is requested: $this->ref$');
 				$oAction->Set('subject_reminder', 'Your approval is requested: $this->ref$ (reminder)');
-				$oAction->Set('body', '<h3>Your approval is requested: $this->html(ref)$</h3>
+				$oAction->Set(
+					'body',
+					'<h3>Your approval is requested: $this->html(ref)$</h3>
 					<p>Dear $approver->html(friendlyname)$, please take some time to approve or reject ticket $this->html(ref)$</p>
 					<b>Caller</b>: $this->html(caller_id_friendlyname)$<br>
 					<b>Title</b>: $this->html(title)$<br>

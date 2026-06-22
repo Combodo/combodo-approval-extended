@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Set>
+    <ApprovalRule alias="ApprovalRule" id="1">
+        <name>Approbation par le manager et le responsable RH</name>
+        <description><![CDATA[Approbation par le manager du demandeur au premier niveau.
+Si il n'y a pas d'approbation ou de rejet après 80% de 70 heures, le substitue (manager du manager) sera notifié afin d'approuver le ticket.
+Approbation par le responsable RH au second niveau.
+        ]]></description>
+        <level1_rule>SELECT Person AS manager JOIN Person AS employee ON employee.manager_id = manager.id WHERE
+            employee.id=:this-&gt;caller_id
+        </level1_rule>
+        <level1_default_approval>no</level1_default_approval>
+        <level1_timeout>70</level1_timeout>
+        <level1_exit_condition>first_reply</level1_exit_condition>
+        <level1_substitute_query>SELECT Person WHERE id=:approver-&gt;manager_id</level1_substitute_query>
+        <level1_substitute_timeout>80</level1_substitute_timeout>
+        <level2_rule>SELECT Person WHERE function =&apos;HR Manager&apos;</level2_rule>
+        <level2_default_approval>no</level2_default_approval>
+        <level2_timeout>70</level2_timeout>
+        <level2_exit_condition>first_reply</level2_exit_condition>
+        <level2_substitute_query></level2_substitute_query>
+        <level2_substitute_timeout></level2_substitute_timeout>
+        <coveragewindow_id>3</coveragewindow_id>
+    </ApprovalRule>
+</Set>

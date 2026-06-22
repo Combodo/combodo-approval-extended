@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Set>
+    <ServiceSubcategory alias="ServiceSubcategory" id="24">
+        <name>Création de compte utilisateur</name>
+        <service_id>7</service_id>
+        <approvalrule_id>1</approvalrule_id>
+    </ServiceSubcategory>
+</Set>
