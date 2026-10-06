@@ -594,7 +594,7 @@
 			$aAllowed[] = trim($sProfileRaw);
 		}
 
-		$aProfiles = UserRights::ListProfiles();
+		$aProfiles = UserRights::ListProfiles($oUser);
 		foreach ($aProfiles as $sProfile) {
             if (in_array($sProfile, $aAllowed))
 			{
