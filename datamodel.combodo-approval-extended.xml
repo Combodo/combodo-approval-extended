@@ -594,15 +594,14 @@
 			$aAllowed[] = trim($sProfileRaw);
 		}
 
-		$oProfileSet = $oUser->Get('profile_list');
-		while ($oProfile = $oProfileSet->Fetch())
-		{
-			$sProfileName = $oProfile->Get('profile');
-			if (in_array($sProfileName, $aAllowed))
+		$aProfiles = UserRights::ListProfiles($oUser);
+		foreach ($aProfiles as $sProfile) {
+            if (in_array($sProfile, $aAllowed))
 			{
 				return true;
 			}
-		}
+        }
+
 		return false;
 	}]]></code>
         </method>
